@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACS/TIS Sensation Testing</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+        h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .metadata-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+        }
+        .metadata-section h2 {
+            margin-bottom: 15px;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .metadata-field {
+            flex: 1;
+            min-width: 150px;
+        }
+        .metadata-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .metadata-field input,
+        .metadata-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .page-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        .page-section.investigator {
+            background-color: #fff8e8;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #333;
+        }
+        .section-header {
+            margin-bottom: 15px;
+        }
+        .section-header .section-label {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .section-header .header-fields {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #333;
+        }
+        .section-header .header-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-header .header-field label {
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .section-header .header-field input {
+            width: 100px;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .section-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .sensation-categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .sensation-category {
+            flex: 1;
+        }
+        .category-header {
+            font-size: 11px;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+        }
+        .sensation-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-top: none;
+            background-color: #fff;
+        }
+        .sensation-item:last-child {
+            border-bottom: 1px solid #ddd;
+        }
+        .sensation-item:first-of-type {
+            border-top: 1px solid #ddd;
+        }
+        .sensation-check {
+            width: 20px;
+            text-align: center;
+        }
+        .sensation-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .sensation-name {
+            flex: 1;
+            font-size: 12px;
+            padding-left: 5px;
+        }
+        .global-location {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .global-location label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .global-location select {
+            padding: 6px;
+            font-size: 13px;
+            border: 1px solid #ccc;
+        }
+        .other-section {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .other-section label {
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .other-section input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .investigator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .investigator-field label {
+            display: block;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .investigator-field input,
+        .investigator-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .electrode-columns {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        .electrode-column {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        .electrode-column h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        .electrode-column h3 {
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+        .comments-section {
+            margin-top: 15px;
+        }
+        .comments-section textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        .required {
+            color: #c00;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sensation Threshold Testing</h1>
+
+    <!-- Participant Metadata Section -->
+    <div class="metadata-section">
+        <h2>Participant Information</h2>
+        <div class="metadata-row">
+            <div class="metadata-field">
+                <label for="subject-id">Subject ID <span class="required">*</span></label>
+                <input type="text" id="subject-id" placeholder="e.g., 001" required>
+            </div>
+            <div class="metadata-field">
+                <label for="experiment">Experiment</label>
+                <input type="text" id="experiment" placeholder="e.g., TES_Study_01">
+            </div>
+            <div class="metadata-field">
+                <label for="session">Session <span class="required">*</span></label>
+                <select id="session" required>
+                    <option value="">-- Select --</option>
+                    <option value="ses-01">Session 1 (ses-01)</option>
+                    <option value="ses-02">Session 2 (ses-02)</option>
+                    <option value="ses-03">Session 3 (ses-03)</option>
+                    <option value="ses-04">Session 4 (ses-04)</option>
+                    <option value="ses-05">Session 5 (ses-05)</option>
+                    <option value="ses-06">Session 6 (ses-06)</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="stim-count">No. Stimulations Before</label>
+                <input type="number" id="stim-count" placeholder="e.g., 0" min="0">
+            </div>
+            <div class="metadata-field">
+                <label for="target-region">Target Region <span class="required">*</span></label>
+                <input type="text" id="target-region" placeholder="e.g., hippocampus">
+            </div>
+            <div class="metadata-field">
+                <label for="region-side">Side</label>
+                <select id="region-side" required>
+                    <option value="">-- Select --</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="bilateral">Bilateral</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="date">Date</label>
+                <input type="date" id="date">
+            </div>
+        </div>
+    </div>
+
+    <!-- tACS Section -->
+    <div class="page-section investigator">
+        <div class="section-header">
+            <div class="section-label">tACS</div>
+            <div class="header-fields">
+                <div class="header-field">
+                    <label for="tacs-frequency">Frequency (Hz)</label>
+                    <input type="number" id="tacs-frequency" step="0.1" placeholder="e.g., 5">
+                </div>
+            </div>
+        </div>
+        
+        <div class="electrode-columns">
+            <!-- Electrodes 1-2 -->
+            <div class="electrode-column">
+                <h2>Electrodes 1 - 2</h2>
+                <div class="investigator-grid">
+                    <div class="investigator-field">
+                        <label for="tacs-e12-threshold">Threshold (mA)</label>
+                        <input type="number" id="tacs-e12-threshold" step="0.1" placeholder="e.g., 0.3">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tacs-e12-max">Max Applied (mA)</label>
+                        <input type="number" id="tacs-e12-max" step="0.1" placeholder="e.g., 0.5">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tacs-e12-impedance">Impedance (kΩ)</label>
+                        <input type="number" id="tacs-e12-impedance" step="0.1" placeholder="e.g., 8">
+                    </div>
+                </div>
+                <h3>Did you experience any sensations just now?</h3>
+                <p class="section-subtitle">Check the box if present.</p>
+                <div id="tacs-e12-sensations-container"></div>
+                <div class="global-location">
+                    <label for="tacs-e12-location">Location:</label>
+                    <select id="tacs-e12-location">
+                        <option value="">-- Select --</option>
+                        <option value="left">Left</option>
+                        <option value="left front">Left front</option>
+                        <option value="left back">Left back</option>
+                        <option value="right">Right</option>
+                        <option value="right front">Right front</option>
+                        <option value="right back">Right back</option>
+                    </select>
+                </div>
+                <div class="other-section">
+                    <label for="tacs-e12-other-sensation">Other (Please Specify):</label>
+                    <input type="text" id="tacs-e12-other-sensation" placeholder="Describe any other sensation not listed above">
+                </div>
+            </div>
+
+            <!-- Electrodes 3-4 -->
+            <div class="electrode-column">
+                <h2>Electrodes 3 - 4</h2>
+                <div class="investigator-grid">
+                    <div class="investigator-field">
+                        <label for="tacs-e34-threshold">Threshold (mA)</label>
+                        <input type="number" id="tacs-e34-threshold" step="0.1" placeholder="e.g., 0.3">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tacs-e34-max">Max Applied (mA)</label>
+                        <input type="number" id="tacs-e34-max" step="0.1" placeholder="e.g., 0.5">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tacs-e34-impedance">Impedance (kΩ)</label>
+                        <input type="number" id="tacs-e34-impedance" step="0.1" placeholder="e.g., 8.8">
+                    </div>
+                </div>
+                <h3>Did you experience any sensations just now?</h3>
+                <p class="section-subtitle">Check the box if present.</p>
+                <div id="tacs-e34-sensations-container"></div>
+                <div class="global-location">
+                    <label for="tacs-e34-location">Location:</label>
+                    <select id="tacs-e34-location">
+                        <option value="">-- Select --</option>
+                        <option value="left">Left</option>
+                        <option value="left front">Left front</option>
+                        <option value="left back">Left back</option>
+                        <option value="right">Right</option>
+                        <option value="right front">Right front</option>
+                        <option value="right back">Right back</option>
+                    </select>
+                </div>
+                <div class="other-section">
+                    <label for="tacs-e34-other-sensation">Other (Please Specify):</label>
+                    <input type="text" id="tacs-e34-other-sensation" placeholder="Describe any other sensation not listed above">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIS Section -->
+    <div class="page-section investigator">
+        <div class="section-header">
+            <div class="section-label">TIS</div>
+            <div class="header-fields">
+                <div class="header-field">
+                    <label for="tis-carrier-freq">Carrier Frequency (Hz)</label>
+                    <input type="number" id="tis-carrier-freq" step="1" placeholder="e.g., 2000">
+                </div>
+                <div class="header-field">
+                    <label for="tis-mod-freq">Modulation Frequency (Hz)</label>
+                    <input type="number" id="tis-mod-freq" step="1" placeholder="e.g., 5">
+                </div>
+            </div>
+        </div>
+        
+        <div class="electrode-columns">
+            <!-- Electrodes 1-2 -->
+            <div class="electrode-column">
+                <h2>Electrodes 1 - 2</h2>
+                <div class="investigator-grid">
+                    <div class="investigator-field">
+                        <label for="tis-e12-threshold">Threshold (mA)</label>
+                        <input type="number" id="tis-e12-threshold" step="0.1" placeholder="e.g., 0.3">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tis-e12-max">Max Applied (mA)</label>
+                        <input type="number" id="tis-e12-max" step="0.1" placeholder="e.g., 0.5">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tis-e12-impedance">Impedance (kΩ)</label>
+                        <input type="number" id="tis-e12-impedance" step="0.1" placeholder="e.g., 8.8">
+                    </div>
+                </div>
+                <h3>Did you experience any sensations just now?</h3>
+                <p class="section-subtitle">Check the box if present.</p>
+                <div id="tis-e12-sensations-container"></div>
+                <div class="global-location">
+                    <label for="tis-e12-location">Location:</label>
+                    <select id="tis-e12-location">
+                        <option value="">-- Select --</option>
+                        <option value="left">Left</option>
+                        <option value="left front">Left front</option>
+                        <option value="left back">Left back</option>
+                        <option value="right">Right</option>
+                        <option value="right front">Right front</option>
+                        <option value="right back">Right back</option>
+                    </select>
+                </div>
+                <div class="other-section">
+                    <label for="tis-e12-other-sensation">Other (Please Specify):</label>
+                    <input type="text" id="tis-e12-other-sensation" placeholder="Describe any other sensation not listed above">
+                </div>
+            </div>
+
+            <!-- Electrodes 3-4 -->
+            <div class="electrode-column">
+                <h2>Electrodes 3 - 4</h2>
+                <div class="investigator-grid">
+                    <div class="investigator-field">
+                        <label for="tis-e34-threshold">Threshold (mA)</label>
+                        <input type="number" id="tis-e34-threshold" step="0.1" placeholder="e.g., 0.3">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tis-e34-max">Max Applied (mA)</label>
+                        <input type="number" id="tis-e34-max" step="0.1" placeholder="e.g., 0.5">
+                    </div>
+                    <div class="investigator-field">
+                        <label for="tis-e34-impedance">Impedance (kΩ)</label>
+                        <input type="number" id="tis-e34-impedance" step="0.1" placeholder="e.g., 8">
+                    </div>
+                </div>
+                <h3>Did you experience any sensations just now?</h3>
+                <p class="section-subtitle">Check the box if present.</p>
+                <div id="tis-e34-sensations-container"></div>
+                <div class="global-location">
+                    <label for="tis-e34-location">Location:</label>
+                    <select id="tis-e34-location">
+                        <option value="">-- Select --</option>
+                        <option value="left">Left</option>
+                        <option value="left front">Left front</option>
+                        <option value="left back">Left back</option>
+                        <option value="right">Right</option>
+                        <option value="right front">Right front</option>
+                        <option value="right back">Right back</option>
+                    </select>
+                </div>
+                <div class="other-section">
+                    <label for="tis-e34-other-sensation">Other (Please Specify):</label>
+                    <input type="text" id="tis-e34-other-sensation" placeholder="Describe any other sensation not listed above">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Comments -->
+    <div class="page-section investigator">
+        <div class="comments-section">
+            <label style="font-weight: bold; font-size: 13px;">Additional Comments:</label>
+            <textarea id="investigator-comments" placeholder="Any additional notes..."></textarea>
+        </div>
+    </div>
+
+    <form id="tacs-tis-form">
+        <div class="submit-section">
+            <button type="submit" class="submit-btn">Submit</button>
+        </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+        <strong>Questionnaire saved successfully!</strong><br>
+        File: <span id="filename"></span>
+    </div>
+
+    <div class="error-message" id="error-message">
+        <strong>Error saving questionnaire</strong><br>
+        <span id="error-text"></span>
+    </div>
+
+    <script>
+        // Sensation categories with their sensations
+        const sensationCategories = {
+            'Discomfort': ['Pain', 'Stinging', 'Pinching', 'Itching', 'Heat', 'Pinprick'],
+            'Mechanical': ['Tingling', 'Vibrations', 'Pushing', 'Pulling', 'Pressure'],
+            'Reflex': ['Pulse', 'Muscle spasm', 'Phosphenes', 'Hair prickle']
+        };
+
+        // Electrode groups to generate sensations for
+        const electrodeGroups = [
+            { prefix: 'tacs-e12', container: 'tacs-e12-sensations-container' },
+            { prefix: 'tacs-e34', container: 'tacs-e34-sensations-container' },
+            { prefix: 'tis-e12', container: 'tis-e12-sensations-container' },
+            { prefix: 'tis-e34', container: 'tis-e34-sensations-container' }
+        ];
+
+        // Generate sensation categories for each electrode group
+        document.addEventListener('DOMContentLoaded', function() {
+            electrodeGroups.forEach(group => {
+                const container = document.getElementById(group.container);
+                
+                // Create categories container
+                const categoriesDiv = document.createElement('div');
+                categoriesDiv.className = 'sensation-categories';
+                
+                Object.entries(sensationCategories).forEach(([categoryName, sensations]) => {
+                    // Create category column
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'sensation-category';
+                    
+                    // Add category header
+                    const headerDiv = document.createElement('div');
+                    headerDiv.className = 'category-header';
+                    headerDiv.textContent = categoryName;
+                    categoryDiv.appendChild(headerDiv);
+                    
+                    // Add sensations
+                    sensations.forEach(sensation => {
+                        const sensationId = sensation.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                        const fullId = `${group.prefix}-${sensationId}`;
+                        
+                        const item = document.createElement('div');
+                        item.className = 'sensation-item';
+                        item.innerHTML = `
+                            <span class="sensation-check">
+                                <input type="checkbox" id="check-${fullId}">
+                            </span>
+                            <span class="sensation-name">${sensation}</span>
+                        `;
+                        categoryDiv.appendChild(item);
+                    });
+                    
+                    categoriesDiv.appendChild(categoryDiv);
+                });
+                
+                container.appendChild(categoriesDiv);
+            });
+
+            // Set default date to today
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        });
+
+        // Collect sensations data for a specific electrode group
+        function collectSensations(prefix) {
+            const data = {};
+            const location = document.getElementById(`${prefix}-location`)?.value || '';
+            
+            // Iterate through all categories
+            Object.entries(sensationCategories).forEach(([categoryName, sensations]) => {
+                sensations.forEach(sensation => {
+                    const sensationId = sensation.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                    const fullId = `${prefix}-${sensationId}`;
+                    const checkbox = document.getElementById(`check-${fullId}`);
+                    
+                    if (checkbox && checkbox.checked) {
+                        data[sensationId] = true;
+                    }
+                });
+            });
+
+            // Collect "other" sensation
+            const otherInput = document.getElementById(`${prefix}-other-sensation`);
+            if (otherInput && otherInput.value.trim()) {
+                data['other'] = otherInput.value.trim();
+            }
+
+            return {
+                sensations: data,
+                location: location
+            };
+        }
+
+        // Form submission
+        document.getElementById('tacs-tis-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get metadata
+            const subjectId = document.getElementById('subject-id').value.trim();
+            const experiment = document.getElementById('experiment').value.trim();
+            const session = document.getElementById('session').value;
+            const stimCount = document.getElementById('stim-count').value;
+            const targetRegion = document.getElementById('target-region').value.trim();
+            const regionSide = document.getElementById('region-side').value;
+            const date = document.getElementById('date').value;
+
+            // Validate metadata
+            if (!subjectId) {
+                alert('Please enter a Subject ID');
+                return;
+            }
+            if (!session) {
+                alert('Please select a Session');
+                return;
+            }
+
+            // Collect tACS data
+            const tacsE12Data = collectSensations('tacs-e12');
+            const tacsE34Data = collectSensations('tacs-e34');
+            const tacs = {
+                frequency: document.getElementById('tacs-frequency').value,
+                e12: {
+                    threshold: document.getElementById('tacs-e12-threshold').value,
+                    max_applied: document.getElementById('tacs-e12-max').value,
+                    impedance: document.getElementById('tacs-e12-impedance').value,
+                    sensations: tacsE12Data.sensations,
+                    location: tacsE12Data.location
+                },
+                e34: {
+                    threshold: document.getElementById('tacs-e34-threshold').value,
+                    max_applied: document.getElementById('tacs-e34-max').value,
+                    impedance: document.getElementById('tacs-e34-impedance').value,
+                    sensations: tacsE34Data.sensations,
+                    location: tacsE34Data.location
+                }
+            };
+
+            // Collect TIS data
+            const tisE12Data = collectSensations('tis-e12');
+            const tisE34Data = collectSensations('tis-e34');
+            const tis = {
+                carrier_frequency: document.getElementById('tis-carrier-freq').value,
+                modulation_frequency: document.getElementById('tis-mod-freq').value,
+                e12: {
+                    threshold: document.getElementById('tis-e12-threshold').value,
+                    max_applied: document.getElementById('tis-e12-max').value,
+                    impedance: document.getElementById('tis-e12-impedance').value,
+                    sensations: tisE12Data.sensations,
+                    location: tisE12Data.location
+                },
+                e34: {
+                    threshold: document.getElementById('tis-e34-threshold').value,
+                    max_applied: document.getElementById('tis-e34-max').value,
+                    impedance: document.getElementById('tis-e34-impedance').value,
+                    sensations: tisE34Data.sensations,
+                    location: tisE34Data.location
+                }
+            };
+
+            // Collect comments
+            const comments = document.getElementById('investigator-comments').value;
+
+            // Prepare data
+            const data = {
+                subject: subjectId,
+                experiment: experiment,
+                session: session,
+                type: 'tacs_tis_sensation_testing',
+                stim_count: stimCount,
+                target_region: targetRegion,
+                region_side: regionSide,
+                date: date || new Date().toISOString().split('T')[0],
+                tacs: tacs,
+                tis: tis,
+                comments: comments
+            };
+
+            // Try server first, fallback to download
+            let savedToServer = false;
+            
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        savedToServer = true;
+                        document.getElementById('filename').textContent = 
+                            `sub-${subjectId}/${session}/beh/${result.filename}`;
+                        document.getElementById('success-message').style.display = 'block';
+                        document.getElementById('error-message').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.log('Server not available, using download fallback');
+            }
+
+            // Fallback: download CSV
+            if (!savedToServer) {
+                const timestamp = new Date().toISOString();
+                
+                // Helper to escape CSV fields
+                const escapeCSV = (val) => {
+                    if (val === null || val === undefined) return '';
+                    const str = String(val);
+                    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                        return `"${str.replace(/"/g, '""')}"`;
+                    }
+                    return str;
+                };
+                
+                // Helper to get checked sensations as comma-separated list
+                const getSensationsList = (sensationsData) => {
+                    const checked = [];
+                    Object.entries(sensationCategories).forEach(([category, sensations]) => {
+                        sensations.forEach(sensation => {
+                            const id = sensation.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                            if (sensationsData[id]) {
+                                checked.push(sensation);
+                            }
+                        });
+                    });
+                    return checked.join(',');
+                };
+                
+                // Build header and row
+                let header = 'subject,experiment,session,stim_count,date,target_region,region_side,timestamp';
+                let row = `${escapeCSV(subjectId)},${escapeCSV(experiment)},${escapeCSV(session)},${escapeCSV(stimCount)},${escapeCSV(date || timestamp.split('T')[0])},${escapeCSV(targetRegion)},${escapeCSV(regionSide)},${escapeCSV(timestamp)}`;
+                
+                // tACS section
+                header += ',tacs_frequency';
+                row += `,${escapeCSV(tacs.frequency)}`;
+                
+                ['e12', 'e34'].forEach(electrode => {
+                    const prefix = `tacs_${electrode}`;
+                    header += `,${prefix}_threshold,${prefix}_max_applied,${prefix}_impedance,${prefix}_sensations,${prefix}_location,${prefix}_other`;
+                    row += `,${escapeCSV(tacs[electrode].threshold)},${escapeCSV(tacs[electrode].max_applied)},${escapeCSV(tacs[electrode].impedance)},${escapeCSV(getSensationsList(tacs[electrode].sensations))},${escapeCSV(tacs[electrode].location)},${escapeCSV(tacs[electrode].sensations.other || '')}`;
+                });
+                
+                // TIS section
+                header += ',tis_carrier_frequency,tis_modulation_frequency';
+                row += `,${escapeCSV(tis.carrier_frequency)},${escapeCSV(tis.modulation_frequency)}`;
+                
+                ['e12', 'e34'].forEach(electrode => {
+                    const prefix = `tis_${electrode}`;
+                    header += `,${prefix}_threshold,${prefix}_max_applied,${prefix}_impedance,${prefix}_sensations,${prefix}_location,${prefix}_other`;
+                    row += `,${escapeCSV(tis[electrode].threshold)},${escapeCSV(tis[electrode].max_applied)},${escapeCSV(tis[electrode].impedance)},${escapeCSV(getSensationsList(tis[electrode].sensations))},${escapeCSV(tis[electrode].location)},${escapeCSV(tis[electrode].sensations.other || '')}`;
+                });
+                
+                // Comments
+                header += ',comments';
+                row += `,${escapeCSV(comments)}`;
+                
+                const filename = `sub-${subjectId}_${session}_tacs_tis_sensation.csv`;
+                const blob = new Blob([header + '\n' + row + '\n'], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('filename').textContent = filename + ' (downloaded)';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

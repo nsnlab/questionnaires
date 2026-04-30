@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Analogue Mood Scales (VAMS)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        .instructions {
+            font-size: 14px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .metadata-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+        }
+        .metadata-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .metadata-field {
+            flex: 1;
+            min-width: 180px;
+        }
+        .metadata-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .metadata-field input,
+        .metadata-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .scale-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .scale-item:last-of-type {
+            margin-bottom: 20px;
+        }
+        .scale-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .slider-label {
+            flex: 0 0 140px;
+            font-size: 13px;
+            text-align: right;
+        }
+        .slider-label.right {
+            text-align: left;
+        }
+        .slider-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #ddd;
+            outline: none;
+            cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            cursor: pointer;
+            border-radius: 0;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #000;
+            cursor: pointer;
+            border-radius: 0;
+            border: none;
+        }
+        .slider-value {
+            position: absolute;
+            right: 0;
+            top: -25px;
+            font-size: 12px;
+            color: #666;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        .required {
+            color: #c00;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visual Analogue Mood Scales (VAMS)</h1>
+    <p class="instructions">Please make a vertical line on the scale that best represents how you feel right now.</p>
+
+    <!-- Metadata Section -->
+    <div class="metadata-section">
+        <h2>Participant Information</h2>
+        <div class="metadata-row">
+            <div class="metadata-field">
+                <label for="subject-id">Subject ID <span class="required">*</span></label>
+                <input type="text" id="subject-id" placeholder="e.g., 001" required>
+            </div>
+            <div class="metadata-field">
+                <label for="experiment">Experiment</label>
+                <input type="text" id="experiment" placeholder="e.g., TES_Study_01">
+            </div>
+            <div class="metadata-field">
+                <label for="session">Session <span class="required">*</span></label>
+                <select id="session" required>
+                    <option value="">-- Select --</option>
+                    <option value="ses-01">Session 1 (ses-01)</option>
+                    <option value="ses-02">Session 2 (ses-02)</option>
+                    <option value="ses-03">Session 3 (ses-03)</option>
+                    <option value="ses-04">Session 4 (ses-04)</option>
+                    <option value="ses-05">Session 5 (ses-05)</option>
+                    <option value="ses-06">Session 6 (ses-06)</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="time">Time <span class="required">*</span></label>
+                <select id="time" required>
+                    <option value="">-- Select --</option>
+                    <option value="pre-sleep">Pre-sleep</option>
+                    <option value="post-sleep">Post-sleep</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <form id="vams-form">
+        <!-- Happy -->
+        <div class="scale-item">
+            <div class="scale-title">How happy do you feel right now?</div>
+            <div class="slider-container">
+                <span class="slider-label">Not at all happy</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="happy" min="0" max="100" value="50">
+                    <span class="slider-value" id="happy-value">50</span>
+                </div>
+                <span class="slider-label right">Extremely happy</span>
+            </div>
+        </div>
+
+        <!-- Sad -->
+        <div class="scale-item">
+            <div class="scale-title">How sad do you feel right now?</div>
+            <div class="slider-container">
+                <span class="slider-label">Not at all sad</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="sad" min="0" max="100" value="50">
+                    <span class="slider-value" id="sad-value">50</span>
+                </div>
+                <span class="slider-label right">Extremely sad</span>
+            </div>
+        </div>
+
+        <!-- Calm -->
+        <div class="scale-item">
+            <div class="scale-title">How calm do you feel right now?</div>
+            <div class="slider-container">
+                <span class="slider-label">Not at all calm</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="calm" min="0" max="100" value="50">
+                    <span class="slider-value" id="calm-value">50</span>
+                </div>
+                <span class="slider-label right">Extremely calm</span>
+            </div>
+        </div>
+
+        <!-- Tense -->
+        <div class="scale-item">
+            <div class="scale-title">How tense do you feel right now?</div>
+            <div class="slider-container">
+                <span class="slider-label">Not at all tense</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="tense" min="0" max="100" value="50">
+                    <span class="slider-value" id="tense-value">50</span>
+                </div>
+                <span class="slider-label right">Extremely tense</span>
+            </div>
+        </div>
+
+        <!-- Energetic -->
+        <div class="scale-item">
+            <div class="scale-title">How energetic do you feel right now?</div>
+            <div class="slider-container">
+                <span class="slider-label">Not at all energetic</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="energetic" min="0" max="100" value="50">
+                    <span class="slider-value" id="energetic-value">50</span>
+                </div>
+                <span class="slider-label right">Extremely energetic</span>
+            </div>
+        </div>
+
+        <!-- Sleepy -->
+        <div class="scale-item">
+            <div class="scale-title">How sleepy do you feel right now?</div>
+            <div class="slider-container">
+                <span class="slider-label">Not at all sleepy</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="sleepy" min="0" max="100" value="50">
+                    <span class="slider-value" id="sleepy-value">50</span>
+                </div>
+                <span class="slider-label right">Extremely sleepy</span>
+            </div>
+        </div>
+
+        <div class="submit-section">
+            <button type="submit" class="submit-btn">Submit Questionnaire</button>
+        </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+        <strong>Questionnaire saved successfully!</strong><br>
+        File: <span id="filename"></span>
+    </div>
+
+    <div class="error-message" id="error-message">
+        <strong>Error saving questionnaire</strong><br>
+        <span id="error-text"></span>
+    </div>
+
+    <script>
+        // Slider names
+        const sliders = ['happy', 'sad', 'calm', 'tense', 'energetic', 'sleepy'];
+
+        // Update slider value displays
+        sliders.forEach(name => {
+            const slider = document.getElementById(name);
+            const valueDisplay = document.getElementById(`${name}-value`);
+            slider.addEventListener('input', () => {
+                valueDisplay.textContent = slider.value;
+            });
+        });
+
+        // Form submission
+        document.getElementById('vams-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get metadata
+            const subjectId = document.getElementById('subject-id').value.trim();
+            const experiment = document.getElementById('experiment').value.trim();
+            const session = document.getElementById('session').value;
+            const time = document.getElementById('time').value;
+
+            // Validate metadata
+            if (!subjectId) {
+                alert('Please enter a Subject ID');
+                return;
+            }
+            if (!session) {
+                alert('Please select a Session');
+                return;
+            }
+            if (!time) {
+                alert('Please select a Time');
+                return;
+            }
+
+            // Get slider values
+            const responses = {};
+            sliders.forEach(name => {
+                responses[name] = document.getElementById(name).value;
+            });
+
+            // Prepare data
+            const data = {
+                subject: subjectId,
+                experiment: experiment,
+                session: session,
+                time: time,
+                type: 'vams',
+                responses: responses
+            };
+
+            // Try server first, fallback to download
+            let savedToServer = false;
+            
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        savedToServer = true;
+                        document.getElementById('filename').textContent = 
+                            `sub-${subjectId}/${session}/beh/${result.filename}`;
+                        document.getElementById('success-message').style.display = 'block';
+                        document.getElementById('error-message').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                // Server not available, fall through to download
+                console.log('Server not available, using download fallback');
+            }
+
+            // Fallback: download CSV
+            if (!savedToServer) {
+                const timestamp = new Date().toISOString();
+                const header = 'subject,experiment,session,time,happy,sad,calm,tense,energetic,sleepy,timestamp\n';
+                const csvData = `${subjectId},${experiment},${session},${time},${Object.values(responses).join(',')},${timestamp}\n`;
+                
+                const filename = `sub-${subjectId}_${session}_${time}_vams.csv`;
+                const blob = new Blob([header + csvData], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('filename').textContent = filename + ' (downloaded)';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

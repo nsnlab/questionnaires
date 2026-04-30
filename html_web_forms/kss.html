@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karolinska Sleepiness Scale (KSS)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        .instructions {
+            font-size: 14px;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .metadata-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+        }
+        .metadata-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .metadata-field {
+            flex: 1;
+            min-width: 180px;
+        }
+        .metadata-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .metadata-field input,
+        .metadata-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .scale-container {
+            margin-bottom: 20px;
+        }
+        .scale-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .scale-option:hover {
+            background-color: #f5f5f5;
+        }
+        .scale-option.selected {
+            background-color: #e8e8e8;
+            border-color: #000;
+        }
+        .scale-option input[type="radio"] {
+            margin-right: 15px;
+            margin-top: 3px;
+            transform: scale(1.3);
+        }
+        .scale-number {
+            font-weight: bold;
+            min-width: 25px;
+            margin-right: 10px;
+        }
+        .scale-text {
+            flex: 1;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        .required {
+            color: #c00;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Karolinska Sleepiness Scale (KSS)</h1>
+    
+    <p class="instructions">
+        Here are some descriptors about how alert or sleepy you might be feeling right now. 
+        Please read them carefully and then select the number that best corresponds to the 
+        statement describing how you feel at the moment.
+    </p>
+
+    <!-- Metadata Section -->
+    <div class="metadata-section">
+        <h2>Participant Information</h2>
+        <div class="metadata-row">
+            <div class="metadata-field">
+                <label for="subject-id">Subject ID <span class="required">*</span></label>
+                <input type="text" id="subject-id" placeholder="e.g., 001" required>
+            </div>
+            <div class="metadata-field">
+                <label for="experiment">Experiment</label>
+                <input type="text" id="experiment" placeholder="e.g., TES_Study_01">
+            </div>
+            <div class="metadata-field">
+                <label for="session">Session <span class="required">*</span></label>
+                <select id="session" required>
+                    <option value="">-- Select --</option>
+                    <option value="ses-01">Session 1 (ses-01)</option>
+                    <option value="ses-02">Session 2 (ses-02)</option>
+                    <option value="ses-03">Session 3 (ses-03)</option>
+                    <option value="ses-04">Session 4 (ses-04)</option>
+                    <option value="ses-05">Session 5 (ses-05)</option>
+                    <option value="ses-06">Session 6 (ses-06)</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="time">Time <span class="required">*</span></label>
+                <select id="time" required>
+                    <option value="">-- Select --</option>
+                    <option value="pre-sleep">Pre-sleep</option>
+                    <option value="post-sleep">Post-sleep</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <form id="kss-form">
+        <div class="scale-container" id="scale-options">
+            <div class="scale-option" data-value="1">
+                <input type="radio" name="kss" id="kss-1" value="1" required>
+                <span class="scale-number">1</span>
+                <span class="scale-text">Extremely alert</span>
+            </div>
+            <div class="scale-option" data-value="2">
+                <input type="radio" name="kss" id="kss-2" value="2">
+                <span class="scale-number">2</span>
+                <span class="scale-text">Very alert</span>
+            </div>
+            <div class="scale-option" data-value="3">
+                <input type="radio" name="kss" id="kss-3" value="3">
+                <span class="scale-number">3</span>
+                <span class="scale-text">Alert</span>
+            </div>
+            <div class="scale-option" data-value="4">
+                <input type="radio" name="kss" id="kss-4" value="4">
+                <span class="scale-number">4</span>
+                <span class="scale-text">Rather alert</span>
+            </div>
+            <div class="scale-option" data-value="5">
+                <input type="radio" name="kss" id="kss-5" value="5">
+                <span class="scale-number">5</span>
+                <span class="scale-text">Neither alert nor sleepy</span>
+            </div>
+            <div class="scale-option" data-value="6">
+                <input type="radio" name="kss" id="kss-6" value="6">
+                <span class="scale-number">6</span>
+                <span class="scale-text">Some signs of sleepiness</span>
+            </div>
+            <div class="scale-option" data-value="7">
+                <input type="radio" name="kss" id="kss-7" value="7">
+                <span class="scale-number">7</span>
+                <span class="scale-text">Sleepy, but no effort to keep awake</span>
+            </div>
+            <div class="scale-option" data-value="8">
+                <input type="radio" name="kss" id="kss-8" value="8">
+                <span class="scale-number">8</span>
+                <span class="scale-text">Sleepy, but some effort to keep awake</span>
+            </div>
+            <div class="scale-option" data-value="9">
+                <input type="radio" name="kss" id="kss-9" value="9">
+                <span class="scale-number">9</span>
+                <span class="scale-text">Very sleepy, great effort to keep awake, fighting sleep</span>
+            </div>
+        </div>
+
+        <div class="submit-section">
+            <button type="submit" class="submit-btn">Submit Questionnaire</button>
+        </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+        <strong>Questionnaire saved successfully!</strong><br>
+        File: <span id="filename"></span>
+    </div>
+
+    <div class="error-message" id="error-message">
+        <strong>Error saving questionnaire</strong><br>
+        <span id="error-text"></span>
+    </div>
+
+    <script>
+        // Handle click on scale options
+        document.querySelectorAll('.scale-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+                
+                // Remove selected from all
+                document.querySelectorAll('.scale-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected to clicked
+                this.classList.add('selected');
+            });
+        });
+
+        // Form submission
+        document.getElementById('kss-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get metadata
+            const subjectId = document.getElementById('subject-id').value.trim();
+            const experiment = document.getElementById('experiment').value.trim();
+            const session = document.getElementById('session').value;
+            const time = document.getElementById('time').value;
+
+            // Validate metadata
+            if (!subjectId) {
+                alert('Please enter a Subject ID');
+                return;
+            }
+            if (!session) {
+                alert('Please select a Session');
+                return;
+            }
+            if (!time) {
+                alert('Please select a Time');
+                return;
+            }
+
+            // Get KSS value
+            const kssRadio = document.querySelector('input[name="kss"]:checked');
+            if (!kssRadio) {
+                alert('Please select a sleepiness level');
+                return;
+            }
+            const kssValue = kssRadio.value;
+
+            // Prepare data
+            const data = {
+                subject: subjectId,
+                experiment: experiment,
+                session: session,
+                time: time,
+                type: 'kss',
+                responses: { KSS: kssValue }
+            };
+
+            // Try server first, fallback to download
+            let savedToServer = false;
+            
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        savedToServer = true;
+                        document.getElementById('filename').textContent = 
+                            `sub-${subjectId}/${session}/beh/${result.filename}`;
+                        document.getElementById('success-message').style.display = 'block';
+                        document.getElementById('error-message').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                // Server not available, fall through to download
+                console.log('Server not available, using download fallback');
+            }
+
+            // Fallback: download CSV
+            if (!savedToServer) {
+                const timestamp = new Date().toISOString();
+                const header = 'subject,experiment,session,time,KSS,timestamp\n';
+                const csvData = `${subjectId},${experiment},${session},${time},${kssValue},${timestamp}\n`;
+                
+                const filename = `sub-${subjectId}_${session}_${time}_kss.csv`;
+                const blob = new Blob([header + csvData], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('filename').textContent = filename + ' (downloaded)';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

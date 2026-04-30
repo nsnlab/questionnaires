@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tES Adverse Effects Questionnaire</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+        h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .metadata-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+        }
+        .metadata-section h2 {
+            margin-bottom: 15px;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .metadata-field {
+            flex: 1;
+            min-width: 150px;
+        }
+        .metadata-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .metadata-field input,
+        .metadata-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .page-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+        .page-section.investigator {
+            background-color: #fff8e8;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #333;
+        }
+        .section-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .symptoms-section h2 {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #000;
+        }
+        .symptom-row {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            background-color: #fff;
+        }
+        .symptom-row.has-details {
+            background-color: #f0f8ff;
+        }
+        .symptom-name {
+            flex: 0 0 160px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .symptom-check {
+            flex: 0 0 50px;
+            text-align: center;
+        }
+        .symptom-check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .symptom-details {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding-left: 10px;
+        }
+        .symptom-details.hidden {
+            display: none;
+        }
+        .detail-field {
+            display: flex;
+            flex-direction: column;
+            min-width: 80px;
+            flex: 1;
+        }
+        .detail-field label {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        .detail-field select,
+        .detail-field input {
+            padding: 4px;
+            font-size: 11px;
+            border: 1px solid #ccc;
+        }
+        .detail-field.electrode {
+            min-width: 70px;
+            flex: 0 0 70px;
+        }
+        .detail-field.electrode.hidden {
+            display: none;
+        }
+        .headers-row {
+            display: flex;
+            padding: 8px 10px;
+            background-color: #eee;
+            font-weight: bold;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-bottom: none;
+        }
+        .headers-row .col-check {
+            flex: 0 0 50px;
+            text-align: center;
+        }
+        .headers-row .col-name {
+            flex: 0 0 160px;
+        }
+        .other-section {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .other-section label {
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .other-section input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .relation-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .relation-section label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .relation-section select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+        .investigator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .investigator-field label {
+            display: block;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .investigator-field input,
+        .investigator-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .electrode-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .electrode-table th,
+        .electrode-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .electrode-table th {
+            background-color: #f0f0f0;
+            font-size: 12px;
+        }
+        .electrode-table td input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        .electrode-table td input.electrode-text {
+            width: 150px;
+            text-align: left;
+        }
+        .position-type-section {
+            margin-top: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .position-type-section label {
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .position-type-section select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .adverse-section {
+            margin-top: 20px;
+        }
+        .adverse-section textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: vertical;
+        }
+        .comments-section {
+            margin-top: 15px;
+        }
+        .comments-section textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .belief-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+        }
+        .belief-section h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .belief-question {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .belief-grid {
+            width: 100%;
+        }
+        .belief-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .belief-column-header {
+            display: flex;
+            flex: 1;
+            gap: 5px;
+        }
+        .belief-column-header span:first-child {
+            flex: 1;
+            text-align: center;
+        }
+        .belief-column-header span:last-child {
+            width: 100px;
+            text-align: center;
+        }
+        .belief-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .belief-column {
+            display: flex;
+            flex: 1;
+            gap: 5px;
+        }
+        .belief-session-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .belief-dropdown {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        .required {
+            color: #c00;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-top: 20px;
+        }
+        .note {
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brain Stimulation Adverse Effects Questionnaire</h1>
+    <p class="subtitle">Please indicate any symptoms you experienced during or after stimulation</p>
+
+    <!-- Participant Metadata Section -->
+    <div class="metadata-section">
+        <h2>Participant Information</h2>
+        <div class="metadata-row">
+            <div class="metadata-field">
+                <label for="subject-id">Subject ID <span class="required">*</span></label>
+                <input type="text" id="subject-id" placeholder="e.g., 001" required>
+            </div>
+            <div class="metadata-field">
+                <label for="experiment">Experiment</label>
+                <input type="text" id="experiment" placeholder="e.g., TES_Study_01">
+            </div>
+            <div class="metadata-field">
+                <label for="session">Session <span class="required">*</span></label>
+                <select id="session" required>
+                    <option value="">-- Select --</option>
+                    <option value="ses-01">Session 1 (ses-01)</option>
+                    <option value="ses-02">Session 2 (ses-02)</option>
+                    <option value="ses-03">Session 3 (ses-03)</option>
+                    <option value="ses-04">Session 4 (ses-04)</option>
+                    <option value="ses-05">Session 5 (ses-05)</option>
+                    <option value="ses-06">Session 6 (ses-06)</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="stim-count">No. Stimulations Before</label>
+                <input type="number" id="stim-count" placeholder="e.g., 0" min="0">
+            </div>
+            <div class="metadata-field">
+                <label for="date">Date</label>
+                <input type="date" id="date">
+            </div>
+        </div>
+    </div>
+
+    <!-- Participant Section - Page 1 -->
+    <div class="page-section">
+        <div class="section-title">Participant Section</div>
+        
+        <div class="symptoms-section">
+            <h2>Did you experience any of the following symptoms or side-effects?</h2>
+            <p class="section-subtitle">Check the box if present, then complete the details for each symptom experienced.</p>
+            
+            <!-- Headers -->
+            <div class="headers-row">
+                <span class="col-name">Symptom</span>
+                <span class="col-check">Present</span>
+            </div>
+
+            <!-- Symptoms List -->
+            <div id="symptoms-container">
+                <!-- Symptoms will be generated by JavaScript -->
+            </div>
+
+            <!-- Other Symptoms -->
+            <div class="other-section">
+                <label for="other-symptom">Other (Please Specify):</label>
+                <input type="text" id="other-symptom" placeholder="Describe any other symptom not listed above">
+                <div id="other-details" class="symptom-details hidden" style="margin-top: 10px;">
+                    <div class="detail-field">
+                        <label>Strength</label>
+                        <select id="other-strength">
+                            <option value="">--</option>
+                            <option value="slight">Slight</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="strong">Strong</option>
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Onset</label>
+                        <select id="other-onset">
+                            <option value="">--</option>
+                            <option value="beginning">At the beginning</option>
+                            <option value="during">During</option>
+                            <option value="after">After</option>
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Duration</label>
+                        <select id="other-duration">
+                            <option value="">--</option>
+                            <option value="initially">Initially only</option>
+                            <option value="short">Short time</option>
+                            <option value="long">Long time</option>
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Effect on State</label>
+                        <select id="other-effect">
+                            <option value="">--</option>
+                            <option value="slightly">Slightly</option>
+                            <option value="moderately">Moderately</option>
+                            <option value="strongly">Strongly</option>
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Location</label>
+                        <select id="other-location" onchange="toggleElectrode('other', this.value)">
+                            <option value="">--</option>
+                            <option value="diffused">Diffused</option>
+                            <option value="focal">Focal</option>
+                            <option value="close_to_electrode">Close to electrode</option>
+                        </select>
+                    </div>
+                    <div class="detail-field electrode hidden" id="electrode-field-other">
+                        <label>Electrode</label>
+                        <input type="text" id="other-electrode" placeholder="e.g., E1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relation to tES -->
+            <div class="relation-section">
+                <label for="tes-related">If any sensations present, do you believe there is a possibility that it is related to the tES?</label>
+                <select id="tes-related">
+                    <option value="">-- Select --</option>
+                    <option value="no">No</option>
+                    <option value="unlikely">Unlikely</option>
+                    <option value="possible">Possible</option>
+                    <option value="likely">Likely</option>
+                    <option value="definite">Definite</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investigator Section - Page 2 -->
+    <div class="page-section investigator">
+        <div class="section-title">Investigator / Researcher Section</div>
+        
+        <div class="investigator-grid">
+            <div class="investigator-field">
+                <label for="stim-type">Type of Stimulation</label>
+                <select id="stim-type">
+                    <option value="">-- Select --</option>
+                    <option value="TIS">TIS</option>
+                    <option value="TDCS">tDCS</option>
+                    <option value="TACS">tACS</option>
+                    <option value="TNS">tNS</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="investigator-field">
+                <label for="stim-intensity">Intensity (mA)</label>
+                <input type="number" id="stim-intensity" step="0.1" placeholder="e.g., 1.5">
+            </div>
+            <div class="investigator-field">
+                <label for="stim-duration">Duration (seconds)</label>
+                <input type="number" id="stim-duration" placeholder="e.g., 300">
+            </div>
+            <div class="investigator-field">
+                <label for="stim-impedance">Impedance (kΩ)</label>
+                <input type="number" id="stim-impedance" step="0.1" placeholder="e.g., 5.0">
+            </div>
+            <div class="investigator-field">
+                <label for="electrode-setup">Electrode Setup</label>
+                <select id="electrode-setup">
+                    <option value="">-- Select --</option>
+                    <option value="gel">Gel</option>
+                    <option value="saline">Saline sponge</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="investigator-field">
+                <label for="electrode-count">No. Electrodes</label>
+                <select id="electrode-count" onchange="updateElectrodeTable()">
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="investigator-field">
+                <label for="electrode-shape">Electrode Dimension/Shape</label>
+                <input type="text" id="electrode-shape" placeholder="e.g., 5x5 cm round">
+            </div>
+        </div>
+
+        <!-- Electrode Position Type -->
+        <div class="position-type-section">
+            <label for="position-type">Electrode Position Type:</label>
+            <select id="position-type" onchange="updateElectrodeTable()">
+                <option value="coordinates">Coordinates (x, y, z)</option>
+                <option value="eegcap">EEG Cap</option>
+            </select>
+        </div>
+
+        <!-- Electrode Positions Table -->
+        <div>
+            <label style="font-weight: bold; font-size: 13px;">Electrode Positions:</label>
+            <div id="electrode-table-container">
+                <!-- Table will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Adverse Events Report -->
+        <div class="adverse-section">
+            <label style="font-weight: bold; font-size: 13px;">Please report any adverse events/problems (typically skin irritation, redness, headache, scalp pain, dizziness, etc.):</label>
+            <p class="note">Rate on a scale of 1-4 where applicable.</p>
+            <textarea id="adverse-events" placeholder="Describe any adverse events and their severity..."></textarea>
+        </div>
+
+        <!-- Additional Comments -->
+        <div class="comments-section">
+            <label style="font-weight: bold; font-size: 13px;">Additional Comments:</label>
+            <textarea id="investigator-comments" placeholder="Any additional notes..."></textarea>
+        </div>
+    </div>
+
+    <!-- End-of-Experiment Question -->
+    <div class="belief-section">
+        <h3>To be administered once only, at end of entire experiment:</h3>
+        <div class="belief-question">Do you believe that you received real or placebo stimulation?</div>
+        
+        <div class="belief-grid">
+            <div class="belief-header">
+                <div class="belief-column-header">
+                    <span>Session</span>
+                    <span>Belief</span>
+                </div>
+                <div class="belief-column-header">
+                    <span>Session</span>
+                    <span>Belief</span>
+                </div>
+                <div class="belief-column-header">
+                    <span>Session</span>
+                    <span>Belief</span>
+                </div>
+            </div>
+            <div class="belief-row">
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S1">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S2">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S3">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+            </div>
+            <div class="belief-row">
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S4">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S5">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S6">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+            </div>
+            <div class="belief-row">
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S7">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S8">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S9">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+            </div>
+            <div class="belief-row">
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S10">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S11">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S12">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+            </div>
+            <div class="belief-row">
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S13">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S14">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+                <div class="belief-column">
+                    <input type="text" class="belief-session-input" placeholder="e.g., S15">
+                    <select class="belief-dropdown">
+                        <option value="">--</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="unknown">Do not know</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <p class="note"><em>N.B. Researchers - this data is to be collated and published with your results stating any adverse effects of the procedure.</em></p>
+    </div>
+
+    <form id="tes-form">
+        <div class="submit-section">
+            <button type="submit" class="submit-btn">Submit Questionnaire</button>
+        </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+        <strong>Questionnaire saved successfully!</strong><br>
+        File: <span id="filename"></span>
+    </div>
+
+    <div class="error-message" id="error-message">
+        <strong>Error saving questionnaire</strong><br>
+        <span id="error-text"></span>
+    </div>
+
+    <script>
+        // Symptom definitions
+        const symptoms = [
+            'Itching',
+            'Tingling',
+            'Skin Redness',
+            'Headache',
+            'Pain',
+            'Scalp Pain',
+            'Neck Pain',
+            'Burning sensation',
+            'Warmth/Heat',
+            'Metallic/Iron Taste',
+            'Fatigue/Decreased Alertness',
+            'Sleepiness',
+            'Trouble Concentrating',
+            'Acute Mood Change',
+            'Nervousness/Anxiety',
+            'Discomfort',
+            'Unpleasant Sensation',
+            'Dizziness',
+            'Nausea',
+            'Visual sensation'
+        ];
+
+        // Dropdown options
+        const strengthOptions = ['', 'slight', 'moderate', 'strong'];
+        const onsetOptions = ['', 'beginning', 'during', 'after'];
+        const durationOptions = ['', 'initially', 'short', 'long'];
+        const effectOptions = ['', 'slightly', 'moderately', 'strongly'];
+        const locationOptions = ['', 'diffused', 'focal', 'close_to_electrode'];
+
+        // Generate symptom rows when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('symptoms-container');
+            symptoms.forEach((symptom, index) => {
+                const symptomId = symptom.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                
+                const row = document.createElement('div');
+                row.className = 'symptom-row';
+                row.id = `row-${symptomId}`;
+                
+                row.innerHTML = `
+                    <span class="symptom-name">${symptom}</span>
+                    <span class="symptom-check">
+                        <input type="checkbox" id="check-${symptomId}" onchange="toggleDetails('${symptomId}')">
+                    </span>
+                    <div class="symptom-details hidden" id="details-${symptomId}">
+                        <div class="detail-field">
+                            <label>Strength</label>
+                            <select id="strength-${symptomId}">
+                                ${strengthOptions.map(opt => `<option value="${opt}">${opt ? opt.charAt(0).toUpperCase() + opt.slice(1) : '--'}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="detail-field">
+                            <label>Onset</label>
+                            <select id="onset-${symptomId}">
+                                ${onsetOptions.map(opt => `<option value="${opt}">${opt ? (opt === 'beginning' ? 'At beginning' : opt.charAt(0).toUpperCase() + opt.slice(1)) : '--'}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="detail-field">
+                            <label>Duration</label>
+                            <select id="duration-${symptomId}">
+                                ${durationOptions.map(opt => `<option value="${opt}">${opt ? (opt === 'initially' ? 'Initially only' : opt.charAt(0).toUpperCase() + opt.slice(1) + ' time') : '--'}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="detail-field">
+                            <label>Effect</label>
+                            <select id="effect-${symptomId}">
+                                ${effectOptions.map(opt => `<option value="${opt}">${opt ? opt.charAt(0).toUpperCase() + opt.slice(1) : '--'}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="detail-field">
+                            <label>Location</label>
+                            <select id="location-${symptomId}" onchange="toggleElectrode('${symptomId}', this.value)">
+                                ${locationOptions.map(opt => `<option value="${opt}">${opt ? (opt === 'close_to_electrode' ? 'Close to electrode' : opt.charAt(0).toUpperCase() + opt.slice(1)) : '--'}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="detail-field electrode hidden" id="electrode-field-${symptomId}">
+                            <label>Electrode</label>
+                            <input type="text" id="electrode-${symptomId}" placeholder="e.g., E1">
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(row);
+            });
+
+            // Initialize electrode table
+            updateElectrodeTable();
+        });
+
+        // Update electrode table based on count and position type
+        function updateElectrodeTable() {
+            const count = parseInt(document.getElementById('electrode-count').value) || 2;
+            const positionType = document.getElementById('position-type').value;
+            const container = document.getElementById('electrode-table-container');
+            
+            let html = '<table class="electrode-table">';
+            
+            if (positionType === 'coordinates') {
+                // x, y, z coordinates
+                html += '<thead><tr><th>Coordinate</th>';
+                for (let i = 1; i <= count; i++) {
+                    html += `<th>E${i}</th>`;
+                }
+                html += '</tr></thead><tbody>';
+                
+                ['x', 'y', 'z'].forEach(coord => {
+                    html += `<tr><td><strong>${coord}</strong></td>`;
+                    for (let i = 1; i <= count; i++) {
+                        html += `<td><input type="number" id="e${i}-${coord}" step="0.01"></td>`;
+                    }
+                    html += '</tr>';
+                });
+            } else {
+                // EEG cap - single text field per electrode
+                html += '<thead><tr><th>Electrode</th><th>Position</th></tr></thead><tbody>';
+                for (let i = 1; i <= count; i++) {
+                    html += `<tr>
+                        <td><strong>E${i}</strong></td>
+                        <td><input type="text" class="electrode-text" id="e${i}-position" placeholder="e.g., F3, Cz, Pz"></td>
+                    </tr>`;
+                }
+            }
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Toggle details visibility
+        function toggleDetails(symptomId) {
+            const checkbox = document.getElementById(`check-${symptomId}`);
+            const details = document.getElementById(`details-${symptomId}`);
+            const row = document.getElementById(`row-${symptomId}`);
+            
+            if (checkbox.checked) {
+                details.classList.remove('hidden');
+                row.classList.add('has-details');
+            } else {
+                details.classList.add('hidden');
+                row.classList.remove('has-details');
+            }
+        }
+
+        // Toggle electrode dropdown based on location
+        function toggleElectrode(symptomId, locationValue) {
+            const electrodeField = document.getElementById(`electrode-field-${symptomId}`);
+            if (electrodeField) {
+                if (locationValue === 'close_to_electrode') {
+                    electrodeField.classList.remove('hidden');
+                } else {
+                    electrodeField.classList.add('hidden');
+                }
+            }
+        }
+
+        // Other symptom details toggle
+        document.getElementById('other-symptom').addEventListener('input', function() {
+            const details = document.getElementById('other-details');
+            if (this.value.trim()) {
+                details.classList.remove('hidden');
+            } else {
+                details.classList.add('hidden');
+            }
+        });
+
+        // Set default date to today
+        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+        // Form submission
+        document.getElementById('tes-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get metadata
+            const subjectId = document.getElementById('subject-id').value.trim();
+            const experiment = document.getElementById('experiment').value.trim();
+            const session = document.getElementById('session').value;
+            const stimCount = document.getElementById('stim-count').value;
+            const date = document.getElementById('date').value;
+            const tesRelated = document.getElementById('tes-related').value;
+
+            // Validate metadata
+            if (!subjectId) {
+                alert('Please enter a Subject ID');
+                return;
+            }
+            if (!session) {
+                alert('Please select a Session');
+                return;
+            }
+
+            // Collect symptom data
+            const responses = {};
+            symptoms.forEach(symptom => {
+                const symptomId = symptom.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                const checkbox = document.getElementById(`check-${symptomId}`);
+                const location = checkbox.checked ? document.getElementById(`location-${symptomId}`).value : '';
+                responses[symptomId] = {
+                    present: checkbox.checked,
+                    strength: checkbox.checked ? document.getElementById(`strength-${symptomId}`).value : '',
+                    onset: checkbox.checked ? document.getElementById(`onset-${symptomId}`).value : '',
+                    duration: checkbox.checked ? document.getElementById(`duration-${symptomId}`).value : '',
+                    effect: checkbox.checked ? document.getElementById(`effect-${symptomId}`).value : '',
+                    location: location,
+                    electrode: (location === 'close_to_electrode' && checkbox.checked) ? document.getElementById(`electrode-${symptomId}`).value : ''
+                };
+            });
+
+            // Collect other symptom
+            const otherSymptom = document.getElementById('other-symptom').value.trim();
+            if (otherSymptom) {
+                const otherLocation = document.getElementById('other-location').value;
+                responses['other'] = {
+                    description: otherSymptom,
+                    strength: document.getElementById('other-strength').value,
+                    onset: document.getElementById('other-onset').value,
+                    duration: document.getElementById('other-duration').value,
+                    effect: document.getElementById('other-effect').value,
+                    location: otherLocation,
+                    electrode: otherLocation === 'close_to_electrode' ? document.getElementById('other-electrode').value : ''
+                };
+            }
+
+            // Collect investigator data
+            const electrodeCount = parseInt(document.getElementById('electrode-count').value) || 2;
+            const positionType = document.getElementById('position-type').value;
+            
+            const investigator = {
+                stim_type: document.getElementById('stim-type').value,
+                intensity: document.getElementById('stim-intensity').value,
+                duration: document.getElementById('stim-duration').value,
+                impedance: document.getElementById('stim-impedance').value,
+                electrode_setup: document.getElementById('electrode-setup').value,
+                electrode_count: electrodeCount,
+                electrode_shape: document.getElementById('electrode-shape').value,
+                position_type: positionType,
+                electrodes: []
+            };
+            
+            // Collect electrode positions
+            for (let i = 1; i <= electrodeCount; i++) {
+                if (positionType === 'coordinates') {
+                    investigator.electrodes.push({
+                        id: `E${i}`,
+                        x: document.getElementById(`e${i}-x`)?.value || '',
+                        y: document.getElementById(`e${i}-y`)?.value || '',
+                        z: document.getElementById(`e${i}-z`)?.value || ''
+                    });
+                } else {
+                    investigator.electrodes.push({
+                        id: `E${i}`,
+                        position: document.getElementById(`e${i}-position`)?.value || ''
+                    });
+                }
+            }
+            
+            investigator.adverse_events = document.getElementById('adverse-events').value;
+            investigator.comments = document.getElementById('investigator-comments').value;
+
+            // Collect belief data
+            const belief = [];
+            const beliefRows = document.querySelectorAll('.belief-row');
+            beliefRows.forEach((row, rowIndex) => {
+                const columns = row.querySelectorAll('.belief-column');
+                columns.forEach((column, colIndex) => {
+                    const sessionInput = column.querySelector('.belief-session-input');
+                    const beliefSelect = column.querySelector('.belief-dropdown');
+                    belief.push({
+                        session: sessionInput.value.trim(),
+                        value: beliefSelect.value
+                    });
+                });
+            });
+
+            // Prepare data
+            const data = {
+                subject: subjectId,
+                experiment: experiment,
+                session: session,
+                type: 'tes_side_effects',
+                stim_count: stimCount,
+                date: date || new Date().toISOString().split('T')[0],
+                tes_related: tesRelated,
+                responses: responses,
+                investigator: investigator,
+                belief: belief
+            };
+
+            // Try server first, fallback to download
+            let savedToServer = false;
+            
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        savedToServer = true;
+                        document.getElementById('filename').textContent = 
+                            `sub-${subjectId}/${session}/beh/${result.filename}`;
+                        document.getElementById('success-message').style.display = 'block';
+                        document.getElementById('error-message').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.log('Server not available, using download fallback');
+            }
+
+            // Fallback: download CSV
+            if (!savedToServer) {
+                const timestamp = new Date().toISOString();
+                let header = 'subject,experiment,session,stim_count,date,tes_related,timestamp';
+                let row = `${subjectId},${experiment},${session},${stimCount || 0},${date || timestamp.split('T')[0]},${tesRelated},${timestamp}`;
+                
+                // Add symptom columns
+                symptoms.forEach(symptom => {
+                    const symptomId = symptom.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                    const data = responses[symptomId];
+                    header += `,${symptomId}_present,${symptomId}_strength,${symptomId}_onset,${symptomId}_duration,${symptomId}_effect,${symptomId}_location,${symptomId}_electrode`;
+                    row += `,${data.present ? 'yes' : 'no'},${data.strength},${data.onset},${data.duration},${data.effect},${data.location},${data.electrode}`;
+                });
+                
+                // Add other
+                header += ',other_description,other_strength,other_onset,other_duration,other_effect,other_location,other_electrode';
+                const otherData = responses['other'] || {};
+                row += `,${otherSymptom},${otherData.strength || ''},${otherData.onset || ''},${otherData.duration || ''},${otherData.effect || ''},${otherData.location || ''},${otherData.electrode || ''}`;
+                
+                // Add investigator section
+                header += ',stim_type,intensity,duration,impedance,electrode_setup,electrode_count,electrode_shape,position_type';
+                row += `,${investigator.stim_type},${investigator.intensity},${investigator.duration},${investigator.impedance},${investigator.electrode_setup},${investigator.electrode_count},"${investigator.electrode_shape}",${investigator.position_type}`;
+                
+                // Add electrode positions
+                investigator.electrodes.forEach((electrode, idx) => {
+                    if (investigator.position_type === 'coordinates') {
+                        header += `,e${idx+1}_x,e${idx+1}_y,e${idx+1}_z`;
+                        row += `,${electrode.x},${electrode.y},${electrode.z}`;
+                    } else {
+                        header += `,e${idx+1}_position`;
+                        row += `,"${electrode.position.replace(/"/g, '""')}"`;
+                    }
+                });
+                
+                // Add adverse events and comments
+                header += ',adverse_events,investigator_comments';
+                row += `,"${investigator.adverse_events.replace(/"/g, '""')}","${investigator.comments.replace(/"/g, '""')}"`;
+                
+                // Add belief data (session:value pairs for each row)
+                header += ',belief_sessions,belief_values';
+                const beliefSessions = belief.map(b => b.session || '').join(';');
+                const beliefValues = belief.map(b => b.value || '').join(';');
+                row += `,"${beliefSessions}","${beliefValues}"`;
+                
+                const filename = `sub-${subjectId}_${session}_tes_side_effects.csv`;
+                const blob = new Blob([header + '\n' + row + '\n'], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('filename').textContent = filename + ' (downloaded)';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
