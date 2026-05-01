@@ -417,6 +417,19 @@
                 <input type="number" id="stim-count" placeholder="e.g., 0" min="0">
             </div>
             <div class="metadata-field">
+                <label for="target-region">Target Region <span class="required">*</span></label>
+                <input type="text" id="target-region" placeholder="E.g. hippocampus" required>
+            </div>
+            <div class="metadata-field">
+                <label for="region-side">Side <span class="required">*</span></label>
+                <select id="region-side" required>
+                    <option value="">-- Select --</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="bilateral">Bilateral</option>
+                </select>
+            </div>
+            <div class="metadata-field">
                 <label for="date">Date</label>
                 <input type="date" id="date">
             </div>
@@ -966,6 +979,8 @@
             const session = document.getElementById('session').value;
             const stimCount = document.getElementById('stim-count').value;
             const date = document.getElementById('date').value;
+            const targetRegion = document.getElementById('target-region').value.trim();
+            const regionSide = document.getElementById('region-side').value;
             const tesRelated = document.getElementById('tes-related').value;
 
             // Validate metadata
@@ -975,6 +990,14 @@
             }
             if (!session) {
                 alert('Please select a Session');
+                return;
+            }
+            if (!targetRegion) {
+                alert('Please enter a Target Region');
+                return;
+            }
+            if (!regionSide) {
+                alert('Please select a Side');
                 return;
             }
 
@@ -1069,6 +1092,8 @@
                 type: 'tes_side_effects',
                 stim_count: stimCount,
                 date: date || new Date().toISOString().split('T')[0],
+                target_region: targetRegion,
+                region_side: regionSide,
                 tes_related: tesRelated,
                 responses: responses,
                 investigator: investigator,

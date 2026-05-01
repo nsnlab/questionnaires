@@ -62,7 +62,14 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
             questionnaire_type = form_data.get('type', 'unknown')
             
             bids_dir = get_bids_path(subject, session)
-            filename = f"sub-{subject}_{session}_{time}_{questionnaire_type}.csv"
+            
+            # Use region in filename for TES side effects and TACS/TIS sensation testing
+            if questionnaire_type in ['tes_side_effects', 'tacs_tis_sensation_testing']:
+                region = form_data.get('target_region', 'unknown').replace(' ', '_')
+                filename = f"sub-{subject}_{session}_{region}_{questionnaire_type}.csv"
+            else:
+                filename = f"sub-{subject}_{session}_{time}_{questionnaire_type}.csv"
+            
             filepath = os.path.join(bids_dir, filename)
             
             responses = form_data.get('responses', {})
@@ -72,11 +79,12 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                 writer = csv.writer(f)
                 
                 if questionnaire_type == 'leeds':
-                    writer.writerow(['subject', 'session', 'time', 'gts_difficulty', 'gts_speed', 'gts_sleepiness', 
+                    date_val = form_data.get('date', '')
+                    writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'gts_difficulty', 'gts_speed', 'gts_sleepiness', 
                                     'qos_restless', 'qos_wakeful', 'afs_difficulty', 'afs_time', 
                                     'bfw_wakeup', 'bfw_current', 'bfw_balance', 'timestamp'])
                     writer.writerow([
-                        subject, session, time,
+                        subject, experiment, session, time, date_val,
                         responses.get('gts_difficulty', ''), responses.get('gts_speed', ''), 
                         responses.get('gts_sleepiness', ''),
                         responses.get('qos_restless', ''), responses.get('qos_wakeful', ''),
@@ -87,16 +95,19 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     ])
                     
                 elif questionnaire_type == 'kss':
-                    writer.writerow(['subject', 'session', 'time', 'KSS', 'timestamp'])
-                    writer.writerow([subject, session, time, responses.get('KSS', ''), timestamp])
+                    date_val = form_data.get('date', '')
+                    writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'KSS', 'timestamp'])
+                    writer.writerow([subject, experiment, session, time, date_val, responses.get('KSS', ''), timestamp])
                     
                 elif questionnaire_type == 'vams':
-                    writer.writerow(['subject', 'experiment', 'session', 'time', 'happy', 'sad', 'calm', 'tense', 'energetic', 'sleepy', 'timestamp'])
+                    date_val = form_data.get('date', '')
+                    writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'happy', 'sad', 'calm', 'tense', 'energetic', 'sleepy', 'timestamp'])
                     writer.writerow([
                         subject,
                         form_data.get('experiment', ''),
                         session,
                         time,
+                        date_val,
                         responses.get('happy', ''), responses.get('sad', ''), responses.get('calm', ''),
                         responses.get('tense', ''), responses.get('energetic', ''), responses.get('sleepy', ''),
                         timestamp
@@ -105,12 +116,14 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                 elif questionnaire_type == 'tes_side_effects':
                     stim_count = form_data.get('stim_count', '0')
                     date_val = form_data.get('date', '')
+                    target_region = form_data.get('target_region', '')
+                    region_side = form_data.get('region_side', '')
                     tes_related = form_data.get('tes_related', '')
                     experiment = form_data.get('experiment', '')
                     investigator = form_data.get('investigator', {})
                     
-                    headers = ['subject', 'experiment', 'session', 'stim_count', 'date', 'tes_related']
-                    row = [subject, experiment, session, stim_count, date_val, tes_related]
+                    headers = ['subject', 'experiment', 'session', 'stim_count', 'date', 'target_region', 'region_side', 'tes_related']
+                    row = [subject, experiment, session, stim_count, date_val, target_region, region_side, tes_related]
                     
                     symptom_ids = [
                         'itching', 'tingling', 'skin_redness', 'headache', 'pain', 'scalp_pain',
@@ -195,12 +208,9 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     target_region = form_data.get('target_region', '')
                     region_side = form_data.get('region_side', '')
                     experiment = form_data.get('experiment', '')
-                    tacs = form_data.get('tacs', {})
-                    tis = form_data.get('tis', {})
+                    tacs_tests = form_data.get('tacs_tests', [])
+                    tis_tests = form_data.get('tis_tests', [])
                     comments = form_data.get('comments', '')
-                    
-                    headers = ['subject', 'experiment', 'session', 'stim_count', 'date', 'target_region', 'region_side']
-                    row = [subject, experiment, session, stim_count, date_val, target_region, region_side]
                     
                     # Sensation list for checking
                     sensation_list = ['Pain', 'Stinging', 'Pinching', 'Itching', 'Heat', 'Pinprick',
@@ -216,51 +226,59 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                                 checked.append(sensation)
                         return ','.join(checked)
                     
-                    # tACS section
-                    headers.append('tacs_frequency')
-                    row.append(tacs.get('frequency', ''))
+                    # Build header (same for all rows)
+                    headers = ['subject', 'experiment', 'session', 'stim_count', 'date', 'target_region', 'region_side', 'test_type', 'test_number']
+                    headers.extend(['frequency', 'carrier_frequency', 'modulation_frequency', 'condition'])
                     
                     for electrode in ['e12', 'e34']:
-                        electrode_data = tacs.get(electrode, {})
-                        sensations = electrode_data.get('sensations', {})
-                        prefix = f'tacs_{electrode}'
-                        
+                        prefix = f'{electrode}'
                         headers.extend([f'{prefix}_threshold', f'{prefix}_max_applied', f'{prefix}_impedance', 
                                        f'{prefix}_sensations', f'{prefix}_location', f'{prefix}_other'])
-                        row.extend([
-                            electrode_data.get('threshold', ''),
-                            electrode_data.get('max_applied', ''),
-                            electrode_data.get('impedance', ''),
-                            get_sensations_list(sensations),
-                            electrode_data.get('location', ''),
-                            sensations.get('other', '')
-                        ])
-                    
-                    # TIS section
-                    headers.extend(['tis_carrier_frequency', 'tis_modulation_frequency'])
-                    row.extend([tis.get('carrier_frequency', ''), tis.get('modulation_frequency', '')])
-                    
-                    for electrode in ['e12', 'e34']:
-                        electrode_data = tis.get(electrode, {})
-                        sensations = electrode_data.get('sensations', {})
-                        prefix = f'tis_{electrode}'
-                        
-                        headers.extend([f'{prefix}_threshold', f'{prefix}_max_applied', f'{prefix}_impedance', 
-                                       f'{prefix}_sensations', f'{prefix}_location', f'{prefix}_other'])
-                        row.extend([
-                            electrode_data.get('threshold', ''),
-                            electrode_data.get('max_applied', ''),
-                            electrode_data.get('impedance', ''),
-                            get_sensations_list(sensations),
-                            electrode_data.get('location', ''),
-                            sensations.get('other', '')
-                        ])
                     
                     headers.extend(['comments', 'timestamp'])
-                    row.extend([comments.replace('"', '""'), timestamp])
-                    
                     writer.writerow(headers)
-                    writer.writerow(row)
+                    
+                    # tACS rows (one per test)
+                    for tacs in tacs_tests:
+                        row = [subject, experiment, session, stim_count, date_val, target_region, region_side, 'tacs', str(tacs.get('test_number', ''))]
+                        row.extend([tacs.get('frequency', ''), '', '', tacs.get('condition', '')])
+                        
+                        for electrode in ['e12', 'e34']:
+                            electrode_data = tacs.get(electrode, {})
+                            sensations = electrode_data.get('sensations', {})
+                            
+                            row.extend([
+                                electrode_data.get('threshold', ''),
+                                electrode_data.get('max_applied', ''),
+                                electrode_data.get('impedance', ''),
+                                get_sensations_list(sensations),
+                                electrode_data.get('location', ''),
+                                sensations.get('other', '')
+                            ])
+                        
+                        row.extend([comments.replace('"', '""'), timestamp])
+                        writer.writerow(row)
+                    
+                    # TIS rows (one per test)
+                    for tis in tis_tests:
+                        row = [subject, experiment, session, stim_count, date_val, target_region, region_side, 'tis', str(tis.get('test_number', ''))]
+                        row.extend(['', tis.get('carrier_frequency', ''), tis.get('modulation_frequency', ''), tis.get('condition', '')])
+                        
+                        for electrode in ['e12', 'e34']:
+                            electrode_data = tis.get(electrode, {})
+                            sensations = electrode_data.get('sensations', {})
+                            
+                            row.extend([
+                                electrode_data.get('threshold', ''),
+                                electrode_data.get('max_applied', ''),
+                                electrode_data.get('impedance', ''),
+                                get_sensations_list(sensations),
+                                electrode_data.get('location', ''),
+                                sensations.get('other', '')
+                            ])
+                        
+                        row.extend([comments.replace('"', '""'), timestamp])
+                        writer.writerow(row)
                     
                 elif questionnaire_type == 'sleep_diary':
                     headers = ['subject', 'experiment', 'session', 'time', 'date', 'bedtime', 'sleep_onset_latency', 
@@ -293,7 +311,8 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     writer.writerow(row)
                     
                 elif questionnaire_type == 'mctq':
-                    headers = ['subject', 'experiment', 'session', 'regular_work', 'work_days',
+                    date_val = form_data.get('date', '')
+                    headers = ['subject', 'experiment', 'session', 'date', 'regular_work', 'work_days',
                               'work_bedtime', 'work_sleep_ready', 'work_sleep_latency', 'work_wake_time',
                               'work_rise_latency', 'work_alarm', 'work_alarm_before',
                               'free_bedtime', 'free_sleep_ready', 'free_sleep_latency', 'free_wake_time',
@@ -303,6 +322,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                         subject,
                         form_data.get('experiment', ''),
                         session,
+                        date_val,
                         form_data.get('regular_work', ''),
                         form_data.get('work_days', ''),
                         form_data.get('work_bedtime', ''),

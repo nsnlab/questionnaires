@@ -171,6 +171,10 @@
                     <option value="post-sleep">Post-sleep</option>
                 </select>
             </div>
+            <div class="metadata-field">
+                <label for="date">Date</label>
+                <input type="date" id="date">
+            </div>
         </div>
     </div>
 
@@ -279,6 +283,8 @@
                 return;
             }
 
+            const date = document.getElementById('date').value;
+
             // Get KSS value
             const kssRadio = document.querySelector('input[name="kss"]:checked');
             if (!kssRadio) {
@@ -293,6 +299,7 @@
                 experiment: experiment,
                 session: session,
                 time: time,
+                date: date || new Date().toISOString().split('T')[0],
                 type: 'kss',
                 responses: { KSS: kssValue }
             };
@@ -327,8 +334,8 @@
             // Fallback: download CSV
             if (!savedToServer) {
                 const timestamp = new Date().toISOString();
-                const header = 'subject,experiment,session,time,KSS,timestamp\n';
-                const csvData = `${subjectId},${experiment},${session},${time},${kssValue},${timestamp}\n`;
+                const header = 'subject,experiment,session,time,date,KSS,timestamp\n';
+                const csvData = `${subjectId},${experiment},${session},${time},${date || timestamp.split('T')[0]},${kssValue},${timestamp}\n`;
                 
                 const filename = `sub-${subjectId}_${session}_${time}_kss.csv`;
                 const blob = new Blob([header + csvData], { type: 'text/csv' });

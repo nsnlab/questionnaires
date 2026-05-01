@@ -296,6 +296,10 @@
                     <option value="ses-06">Session 6 (ses-06)</option>
                 </select>
             </div>
+            <div class="metadata-field">
+                <label for="date">Date</label>
+                <input type="date" id="date">
+            </div>
         </div>
     </div>
 
@@ -602,6 +606,7 @@
             const subjectId = document.getElementById('subject-id').value.trim();
             const experiment = document.getElementById('experiment').value.trim();
             const session = document.getElementById('session').value;
+            const date = document.getElementById('date').value;
 
             // Validate metadata
             if (!subjectId) {
@@ -647,6 +652,7 @@
                 subject: subjectId,
                 experiment: experiment,
                 session: session,
+                date: date || new Date().toISOString().split('T')[0],
                 type: 'mctq',
                 regular_work: regularWork,
                 work_days: workDays,
@@ -697,8 +703,8 @@
             // Fallback: download CSV
             if (!savedToServer) {
                 const timestamp = new Date().toISOString();
-                const header = 'subject,experiment,session,regular_work,work_days,work_bedtime,work_sleep_ready,work_sleep_latency,work_wake_time,work_rise_latency,work_alarm,work_alarm_before,free_bedtime,free_sleep_ready,free_sleep_latency,free_wake_time,free_rise_latency,free_alarm,free_reasons,free_reason_types,free_reason_other,timestamp\n';
-                const csvData = `${subjectId},${experiment},${session},${regularWork},${workDays},${workBedtime},${workSleepReady},${workSleepLatency},${workWakeTime},${workRiseLatency},${workAlarm},${workAlarmBefore},${freeBedtime},${freeSleepReady},${freeSleepLatency},${freeWakeTime},${freeRiseLatency},${freeAlarm},${freeReasons},"${freeReasonTypes.join(';')}","${freeReasonOtherText.replace(/"/g, '""')}",${timestamp}\n`;
+                const header = 'subject,experiment,session,date,regular_work,work_days,work_bedtime,work_sleep_ready,work_sleep_latency,work_wake_time,work_rise_latency,work_alarm,work_alarm_before,free_bedtime,free_sleep_ready,free_sleep_latency,free_wake_time,free_rise_latency,free_alarm,free_reasons,free_reason_types,free_reason_other,timestamp\n';
+                const csvData = `${subjectId},${experiment},${session},${date || timestamp.split('T')[0]},${regularWork},${workDays},${workBedtime},${workSleepReady},${workSleepLatency},${workWakeTime},${workRiseLatency},${workAlarm},${workAlarmBefore},${freeBedtime},${freeSleepReady},${freeSleepLatency},${freeWakeTime},${freeRiseLatency},${freeAlarm},${freeReasons},"${freeReasonTypes.join(';')}","${freeReasonOtherText.replace(/"/g, '""')}",${timestamp}\n`;
                 
                 const filename = `sub-${subjectId}_${session}_mctq.csv`;
                 const blob = new Blob([header + csvData], { type: 'text/csv' });

@@ -81,10 +81,14 @@ questionnaires/
 
 ## Data Output
 
-When run through the server, form submissions are saved to:
+When run through the server, form submissions are saved in compliance with BIDS to:
 ```
-data/sub-{subject}/{session}/beh/sub-{subject}_{session}_{time}_{questionnaire_type}.csv
+data/sub-{subject}/{session}/beh/
 ```
+
+The `{identifier}` varies by questionnaire:
+- **Pre/post questionnaires:** `{time}` (e.g., "pre-sleep", "post-sleep")
+- **Region-based questionnaires:** `{region}` (e.g., "hippocampus", "DLPFC")
 
 Otherwise, `.csv` files are downloaded to your computer's `/Downloads`
 
@@ -97,8 +101,9 @@ All questionnaires include these standard fields:
 | Field | Description |
 |-------|-------------|
 | `subject` | Subject ID (e.g., "001") |
-| `session` | Session identifier (e.g., "ses-01") |
 | `experiment` | Experiment name (optional) |
+| `session` | Session identifier (e.g., "ses-01") |
+| `date` | Date of entry |
 | `timestamp` | ISO 8601 timestamp of submission |
 
 ### Questionnaire-Specific Data Fields
@@ -119,12 +124,16 @@ All questionnaires include these standard fields:
 | `bfw_current` | Behavior following waking: current state (1-5) |
 | `bfw_balance` | Behavior following waking: balance (1-5) |
 
+**Filename format:** `sub-{subject}_{session}_{time}_leeds.csv`
+
 #### Karolinska Sleepiness Scale (KSS)
 
 | Field | Description |
 |-------|-------------|
 | `time` | Time of day (e.g., "pre-sleep", "post-sleep") |
 | `KSS` | Sleepiness rating (1-10) |
+
+**Filename format:** `sub-{subject}_{session}_{time}_kss.csv`
 
 #### Visual Analogue Mood Scale (VAMS)
 
@@ -138,12 +147,15 @@ All questionnaires include these standard fields:
 | `energetic` | Energetic rating (0-100) |
 | `sleepy` | Sleepy rating (0-100) |
 
+**Filename format:** `sub-{subject}_{session}_{time}_vams.csv`
+
 #### TES Side Effects
 
 | Field | Description |
 |-------|-------------|
 | `stim_count` | Number of stimulations before this session |
-| `date` | Date of session |
+| `target_region` | Target brain region |
+| `region_side` | Side (left/right/bilateral) |
 | `tes_related` | Is this related to TES? |
 | `{symptom}_present` | Symptom present? (yes/no) |
 | `{symptom}_strength` | Symptom strength (slight/moderate/strong) |
@@ -168,12 +180,13 @@ All questionnaires include these standard fields:
 | `belief_sessions` | Belief sessions (semicolon-separated) |
 | `belief_values` | Belief values (semicolon-separated) |
 
+**Filename format:** `sub-{subject}_{session}_{region}_tes_side_effects.csv`
+
 #### Sleep Diary
 
 | Field | Description |
 |-------|-------------|
 | `time` | Time of day (pre-sleep/post-sleep) |
-| `date` | Date of entry |
 | `bedtime` | Time went to bed |
 | `sleep_onset_latency` | Minutes to fall asleep |
 | `awakenings` | Number of awakenings |
@@ -188,6 +201,8 @@ All questionnaires include these standard fields:
 | `napped` | Did you nap? (yes/no) |
 | `nap_duration` | Nap duration (minutes) |
 | `notes` | Additional notes |
+
+**Filename format:** `sub-{subject}_{session}_{time}_sleep_diary.csv`
 
 #### Munich Chronotype Questionnaire (MCTQ)
 
@@ -212,32 +227,43 @@ All questionnaires include these standard fields:
 | `free_reason_types` | Reason types |
 | `free_reason_other` | Other reasons |
 
+**Filename format:** `sub-{subject}_{session}_mctq.csv`
+
 #### TACS/TIS Sensation Testing
+
+**Multi-row format:** Each stimulation test creates a separate row. Both tACS and TIS support multiple tests via "Add another test" buttons.
 
 | Field | Description |
 |-------|-------------|
 | `stim_count` | Number of stimulations before this session |
-| `date` | Date of session |
 | `target_region` | Target brain region |
 | `region_side` | Side (left/right/bilateral) |
-| `tacs_frequency` | tACS frequency (Hz) |
-| `tacs_e12_threshold` | Electrodes 1-2 threshold (mA) |
-| `tacs_e12_max_applied` | Electrodes 1-2 max applied (mA) |
-| `tacs_e12_impedance` | Electrodes 1-2 impedance (kΩ) |
-| `tacs_e12_sensations` | Electrodes 1-2 sensations (comma-separated) |
-| `tacs_e12_location` | Electrodes 1-2 sensation location |
-| `tacs_e12_other` | Electrodes 1-2 other sensation description |
-| `tacs_e34_*` | Same fields for Electrodes 3-4 |
-| `tis_carrier_frequency` | TIS carrier frequency (Hz) |
-| `tis_modulation_frequency` | TIS modulation frequency (Hz) |
-| `tis_e12_*` | Same fields for TIS Electrodes 1-2 |
-| `tis_e34_*` | Same fields for TIS Electrodes 3-4 |
+| `test_type` | Type of test: `tacs` or `tis` |
+| `test_number` | Test number (1, 2, 3, ...) |
+| `frequency` | tACS frequency (Hz) — tACS only |
+| `carrier_frequency` | TIS carrier frequency (Hz) — TIS only |
+| `modulation_frequency` | TIS modulation frequency (Hz) — TIS only |
+| `condition` | Perceived condition (real/placebo/dont_know) |
+| `e12_threshold` | Electrodes 1-2 threshold (mA) |
+| `e12_max_applied` | Electrodes 1-2 max applied (mA) |
+| `e12_impedance` | Electrodes 1-2 impedance (kΩ) |
+| `e12_sensations` | Electrodes 1-2 sensations (comma-separated) |
+| `e12_location` | Electrodes 1-2 sensation location |
+| `e12_other` | Electrodes 1-2 other sensation description |
+| `e34_threshold` | Electrodes 3-4 threshold (mA) |
+| `e34_max_applied` | Electrodes 3-4 max applied (mA) |
+| `e34_impedance` | Electrodes 3-4 impedance (kΩ) |
+| `e34_sensations` | Electrodes 3-4 sensations (comma-separated) |
+| `e34_location` | Electrodes 3-4 sensation location |
+| `e34_other` | Electrodes 3-4 other sensation description |
 | `comments` | Additional comments |
 
 **Sensation categories in `*_sensations` column:**
 - **Discomfort:** Pain, Stinging, Pinching, Itching, Heat, Pinprick
 - **Mechanical:** Tingling, Vibrations, Pushing, Pulling, Pressure
 - **Reflex:** Pulse, Muscle spasm, Phosphenes, Hair prickle
+
+**Filename format:** `sub-{subject}_{session}_{region}_tacs_tis_sensation.csv`
 
 ## Options
 

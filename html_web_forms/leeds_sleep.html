@@ -208,6 +208,18 @@
                     <option value="ses-06">Session 6 (ses-06)</option>
                 </select>
             </div>
+            <div class="metadata-field">
+                <label for="time">Time <span class="required">*</span></label>
+                <select id="time" required>
+                    <option value="">-- Select --</option>
+                    <option value="pre-sleep">Pre-sleep</option>
+                    <option value="post-sleep">Post-sleep</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="date">Date</label>
+                <input type="date" id="date">
+            </div>
         </div>
     </div>
 
@@ -389,6 +401,8 @@
             const subjectId = document.getElementById('subject-id').value.trim();
             const experiment = document.getElementById('experiment').value.trim();
             const session = document.getElementById('session').value;
+            const time = document.getElementById('time').value;
+            const date = document.getElementById('date').value;
 
             // Validate metadata
             if (!subjectId) {
@@ -397,6 +411,10 @@
             }
             if (!session) {
                 alert('Please select a Session');
+                return;
+            }
+            if (!time) {
+                alert('Please select a Time');
                 return;
             }
 
@@ -419,6 +437,8 @@
                 subject: subjectId,
                 experiment: experiment,
                 session: session,
+                time: time,
+                date: date || new Date().toISOString().split('T')[0],
                 type: 'leeds',
                 responses: responses
             };

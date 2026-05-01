@@ -175,6 +175,24 @@
             font-size: 13px;
             border: 1px solid #ccc;
         }
+        .condition-question {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            text-align: center;
+        }
+        .condition-question label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .condition-question select {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            min-width: 150px;
+        }
         .other-section {
             margin: 15px 0;
             padding: 15px;
@@ -242,6 +260,40 @@
             padding: 10px;
             border: 1px solid #ccc;
             font-size: 14px;
+        }
+        .add-test-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .add-test-btn {
+            padding: 12px 30px;
+            font-size: 14px;
+            background-color: #4a90d9;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .add-test-btn:hover {
+            background-color: #357abd;
+        }
+        .section-wrapper {
+            position: relative;
+        }
+        .remove-test-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .remove-test-btn:hover {
+            background-color: #c82333;
         }
         .submit-section {
             text-align: center;
@@ -314,7 +366,7 @@
             </div>
             <div class="metadata-field">
                 <label for="target-region">Target Region <span class="required">*</span></label>
-                <input type="text" id="target-region" placeholder="e.g., hippocampus">
+                <input type="text" id="target-region" placeholder="e.g., hippocampus" required>
             </div>
             <div class="metadata-field">
                 <label for="region-side">Side</label>
@@ -332,190 +384,24 @@
         </div>
     </div>
 
-    <!-- tACS Section -->
-    <div class="page-section investigator">
-        <div class="section-header">
-            <div class="section-label">tACS</div>
-            <div class="header-fields">
-                <div class="header-field">
-                    <label for="tacs-frequency">Frequency (Hz)</label>
-                    <input type="number" id="tacs-frequency" step="0.1" placeholder="e.g., 5">
-                </div>
-            </div>
-        </div>
-        
-        <div class="electrode-columns">
-            <!-- Electrodes 1-2 -->
-            <div class="electrode-column">
-                <h2>Electrodes 1 - 2</h2>
-                <div class="investigator-grid">
-                    <div class="investigator-field">
-                        <label for="tacs-e12-threshold">Threshold (mA)</label>
-                        <input type="number" id="tacs-e12-threshold" step="0.1" placeholder="e.g., 0.3">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tacs-e12-max">Max Applied (mA)</label>
-                        <input type="number" id="tacs-e12-max" step="0.1" placeholder="e.g., 0.5">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tacs-e12-impedance">Impedance (kΩ)</label>
-                        <input type="number" id="tacs-e12-impedance" step="0.1" placeholder="e.g., 8">
-                    </div>
-                </div>
-                <h3>Did you experience any sensations just now?</h3>
-                <p class="section-subtitle">Check the box if present.</p>
-                <div id="tacs-e12-sensations-container"></div>
-                <div class="global-location">
-                    <label for="tacs-e12-location">Location:</label>
-                    <select id="tacs-e12-location">
-                        <option value="">-- Select --</option>
-                        <option value="left">Left</option>
-                        <option value="left front">Left front</option>
-                        <option value="left back">Left back</option>
-                        <option value="right">Right</option>
-                        <option value="right front">Right front</option>
-                        <option value="right back">Right back</option>
-                    </select>
-                </div>
-                <div class="other-section">
-                    <label for="tacs-e12-other-sensation">Other (Please Specify):</label>
-                    <input type="text" id="tacs-e12-other-sensation" placeholder="Describe any other sensation not listed above">
-                </div>
-            </div>
-
-            <!-- Electrodes 3-4 -->
-            <div class="electrode-column">
-                <h2>Electrodes 3 - 4</h2>
-                <div class="investigator-grid">
-                    <div class="investigator-field">
-                        <label for="tacs-e34-threshold">Threshold (mA)</label>
-                        <input type="number" id="tacs-e34-threshold" step="0.1" placeholder="e.g., 0.3">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tacs-e34-max">Max Applied (mA)</label>
-                        <input type="number" id="tacs-e34-max" step="0.1" placeholder="e.g., 0.5">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tacs-e34-impedance">Impedance (kΩ)</label>
-                        <input type="number" id="tacs-e34-impedance" step="0.1" placeholder="e.g., 8.8">
-                    </div>
-                </div>
-                <h3>Did you experience any sensations just now?</h3>
-                <p class="section-subtitle">Check the box if present.</p>
-                <div id="tacs-e34-sensations-container"></div>
-                <div class="global-location">
-                    <label for="tacs-e34-location">Location:</label>
-                    <select id="tacs-e34-location">
-                        <option value="">-- Select --</option>
-                        <option value="left">Left</option>
-                        <option value="left front">Left front</option>
-                        <option value="left back">Left back</option>
-                        <option value="right">Right</option>
-                        <option value="right front">Right front</option>
-                        <option value="right back">Right back</option>
-                    </select>
-                </div>
-                <div class="other-section">
-                    <label for="tacs-e34-other-sensation">Other (Please Specify):</label>
-                    <input type="text" id="tacs-e34-other-sensation" placeholder="Describe any other sensation not listed above">
-                </div>
-            </div>
-        </div>
+    <!-- tACS Sections Container -->
+    <div id="tacs-sections-container">
+        <!-- tACS sections will be dynamically added here -->
     </div>
 
-    <!-- TIS Section -->
-    <div class="page-section investigator">
-        <div class="section-header">
-            <div class="section-label">TIS</div>
-            <div class="header-fields">
-                <div class="header-field">
-                    <label for="tis-carrier-freq">Carrier Frequency (Hz)</label>
-                    <input type="number" id="tis-carrier-freq" step="1" placeholder="e.g., 2000">
-                </div>
-                <div class="header-field">
-                    <label for="tis-mod-freq">Modulation Frequency (Hz)</label>
-                    <input type="number" id="tis-mod-freq" step="1" placeholder="e.g., 5">
-                </div>
-            </div>
-        </div>
-        
-        <div class="electrode-columns">
-            <!-- Electrodes 1-2 -->
-            <div class="electrode-column">
-                <h2>Electrodes 1 - 2</h2>
-                <div class="investigator-grid">
-                    <div class="investigator-field">
-                        <label for="tis-e12-threshold">Threshold (mA)</label>
-                        <input type="number" id="tis-e12-threshold" step="0.1" placeholder="e.g., 0.3">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tis-e12-max">Max Applied (mA)</label>
-                        <input type="number" id="tis-e12-max" step="0.1" placeholder="e.g., 0.5">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tis-e12-impedance">Impedance (kΩ)</label>
-                        <input type="number" id="tis-e12-impedance" step="0.1" placeholder="e.g., 8.8">
-                    </div>
-                </div>
-                <h3>Did you experience any sensations just now?</h3>
-                <p class="section-subtitle">Check the box if present.</p>
-                <div id="tis-e12-sensations-container"></div>
-                <div class="global-location">
-                    <label for="tis-e12-location">Location:</label>
-                    <select id="tis-e12-location">
-                        <option value="">-- Select --</option>
-                        <option value="left">Left</option>
-                        <option value="left front">Left front</option>
-                        <option value="left back">Left back</option>
-                        <option value="right">Right</option>
-                        <option value="right front">Right front</option>
-                        <option value="right back">Right back</option>
-                    </select>
-                </div>
-                <div class="other-section">
-                    <label for="tis-e12-other-sensation">Other (Please Specify):</label>
-                    <input type="text" id="tis-e12-other-sensation" placeholder="Describe any other sensation not listed above">
-                </div>
-            </div>
+    <!-- Add tACS Test Button -->
+    <div class="add-test-section">
+        <button type="button" class="add-test-btn" id="add-tacs-btn">+ Add another tACS test</button>
+    </div>
 
-            <!-- Electrodes 3-4 -->
-            <div class="electrode-column">
-                <h2>Electrodes 3 - 4</h2>
-                <div class="investigator-grid">
-                    <div class="investigator-field">
-                        <label for="tis-e34-threshold">Threshold (mA)</label>
-                        <input type="number" id="tis-e34-threshold" step="0.1" placeholder="e.g., 0.3">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tis-e34-max">Max Applied (mA)</label>
-                        <input type="number" id="tis-e34-max" step="0.1" placeholder="e.g., 0.5">
-                    </div>
-                    <div class="investigator-field">
-                        <label for="tis-e34-impedance">Impedance (kΩ)</label>
-                        <input type="number" id="tis-e34-impedance" step="0.1" placeholder="e.g., 8">
-                    </div>
-                </div>
-                <h3>Did you experience any sensations just now?</h3>
-                <p class="section-subtitle">Check the box if present.</p>
-                <div id="tis-e34-sensations-container"></div>
-                <div class="global-location">
-                    <label for="tis-e34-location">Location:</label>
-                    <select id="tis-e34-location">
-                        <option value="">-- Select --</option>
-                        <option value="left">Left</option>
-                        <option value="left front">Left front</option>
-                        <option value="left back">Left back</option>
-                        <option value="right">Right</option>
-                        <option value="right front">Right front</option>
-                        <option value="right back">Right back</option>
-                    </select>
-                </div>
-                <div class="other-section">
-                    <label for="tis-e34-other-sensation">Other (Please Specify):</label>
-                    <input type="text" id="tis-e34-other-sensation" placeholder="Describe any other sensation not listed above">
-                </div>
-            </div>
-        </div>
+    <!-- TIS Sections Container -->
+    <div id="tis-sections-container">
+        <!-- TIS sections will be dynamically added here -->
+    </div>
+
+    <!-- Add TIS Test Button -->
+    <div class="add-test-section">
+        <button type="button" class="add-test-btn" id="add-tis-btn">+ Add another TIS test</button>
     </div>
 
     <!-- Additional Comments -->
@@ -550,58 +436,452 @@
             'Reflex': ['Pulse', 'Muscle spasm', 'Phosphenes', 'Hair prickle']
         };
 
-        // Electrode groups to generate sensations for
-        const electrodeGroups = [
-            { prefix: 'tacs-e12', container: 'tacs-e12-sensations-container' },
-            { prefix: 'tacs-e34', container: 'tacs-e34-sensations-container' },
-            { prefix: 'tis-e12', container: 'tis-e12-sensations-container' },
-            { prefix: 'tis-e34', container: 'tis-e34-sensations-container' }
-        ];
-
-        // Generate sensation categories for each electrode group
-        document.addEventListener('DOMContentLoaded', function() {
-            electrodeGroups.forEach(group => {
-                const container = document.getElementById(group.container);
+        // Generate sensation categories HTML for a given prefix
+        function generateSensationsHTML(prefix) {
+            let html = '<div class="sensation-categories">';
+            
+            Object.entries(sensationCategories).forEach(([categoryName, sensations]) => {
+                html += `<div class="sensation-category">
+                    <div class="category-header">${categoryName}</div>`;
                 
-                // Create categories container
-                const categoriesDiv = document.createElement('div');
-                categoriesDiv.className = 'sensation-categories';
-                
-                Object.entries(sensationCategories).forEach(([categoryName, sensations]) => {
-                    // Create category column
-                    const categoryDiv = document.createElement('div');
-                    categoryDiv.className = 'sensation-category';
+                sensations.forEach(sensation => {
+                    const sensationId = sensation.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                    const fullId = `${prefix}-${sensationId}`;
                     
-                    // Add category header
-                    const headerDiv = document.createElement('div');
-                    headerDiv.className = 'category-header';
-                    headerDiv.textContent = categoryName;
-                    categoryDiv.appendChild(headerDiv);
-                    
-                    // Add sensations
-                    sensations.forEach(sensation => {
-                        const sensationId = sensation.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
-                        const fullId = `${group.prefix}-${sensationId}`;
-                        
-                        const item = document.createElement('div');
-                        item.className = 'sensation-item';
-                        item.innerHTML = `
-                            <span class="sensation-check">
-                                <input type="checkbox" id="check-${fullId}">
-                            </span>
-                            <span class="sensation-name">${sensation}</span>
-                        `;
-                        categoryDiv.appendChild(item);
-                    });
-                    
-                    categoriesDiv.appendChild(categoryDiv);
+                    html += `<div class="sensation-item">
+                        <span class="sensation-check">
+                            <input type="checkbox" id="check-${fullId}">
+                        </span>
+                        <span class="sensation-name">${sensation}</span>
+                    </div>`;
                 });
                 
-                container.appendChild(categoriesDiv);
+                html += '</div>';
             });
+            
+            html += '</div>';
+            return html;
+        }
 
+        // Create a new tACS section
+        function createTACSSection(testNum) {
+            const sectionId = `tacs-section-${testNum}`;
+            const prefix = `tacs${testNum}`;
+            
+            const section = document.createElement('div');
+            section.className = 'page-section investigator section-wrapper';
+            section.id = sectionId;
+            section.dataset.testNum = testNum;
+            
+            section.innerHTML = `
+                <button type="button" class="remove-test-btn" onclick="removeTACSSection(this)">Remove test</button>
+                <div class="section-header">
+                    <div class="section-label">tACS (Test ${testNum})</div>
+                    <div class="header-fields">
+                        <div class="header-field">
+                            <label for="${prefix}-frequency">Frequency (Hz)</label>
+                            <input type="number" id="${prefix}-frequency" step="0.1" placeholder="e.g., 5">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="electrode-columns">
+                    <!-- Electrodes 1-2 -->
+                    <div class="electrode-column">
+                        <h2>Electrodes 1 - 2</h2>
+                        <div class="investigator-grid">
+                            <div class="investigator-field">
+                                <label for="${prefix}-e12-threshold">Threshold (mA)</label>
+                                <input type="number" id="${prefix}-e12-threshold" step="0.1" placeholder="e.g., 0.3">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e12-max">Max Applied (mA)</label>
+                                <input type="number" id="${prefix}-e12-max" step="0.1" placeholder="e.g., 0.5">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e12-impedance">Impedance (kΩ)</label>
+                                <input type="number" id="${prefix}-e12-impedance" step="0.1" placeholder="e.g., 8.8">
+                            </div>
+                        </div>
+                        <h3>Did you experience any sensations just now?</h3>
+                        <p class="section-subtitle">Check the box if present.</p>
+                        <div id="${prefix}-e12-sensations-container">${generateSensationsHTML(`${prefix}-e12`)}</div>
+                        <div class="other-section">
+                            <label for="${prefix}-e12-other-sensation">Other (Please Specify):</label>
+                            <input type="text" id="${prefix}-e12-other-sensation" placeholder="Describe any other sensation not listed above">
+                        </div>
+                        <div class="global-location">
+                            <label for="${prefix}-e12-location">Location:</label>
+                            <select id="${prefix}-e12-location">
+                                <option value="">-- Select --</option>
+                                <option value="left">Left</option>
+                                <option value="left front">Left front</option>
+                                <option value="left back">Left back</option>
+                                <option value="right">Right</option>
+                                <option value="right front">Right front</option>
+                                <option value="right back">Right back</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Electrodes 3-4 -->
+                    <div class="electrode-column">
+                        <h2>Electrodes 3 - 4</h2>
+                        <div class="investigator-grid">
+                            <div class="investigator-field">
+                                <label for="${prefix}-e34-threshold">Threshold (mA)</label>
+                                <input type="number" id="${prefix}-e34-threshold" step="0.1" placeholder="e.g., 0.3">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e34-max">Max Applied (mA)</label>
+                                <input type="number" id="${prefix}-e34-max" step="0.1" placeholder="e.g., 0.5">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e34-impedance">Impedance (kΩ)</label>
+                                <input type="number" id="${prefix}-e34-impedance" step="0.1" placeholder="e.g., 8.8">
+                            </div>
+                        </div>
+                        <h3>Did you experience any sensations just now?</h3>
+                        <p class="section-subtitle">Check the box if present.</p>
+                        <div id="${prefix}-e34-sensations-container">${generateSensationsHTML(`${prefix}-e34`)}</div>
+                        <div class="other-section">
+                            <label for="${prefix}-e34-other-sensation">Other (Please Specify):</label>
+                            <input type="text" id="${prefix}-e34-other-sensation" placeholder="Describe any other sensation not listed above">
+                        </div>
+                        <div class="global-location">
+                            <label for="${prefix}-e34-location">Location:</label>
+                            <select id="${prefix}-e34-location">
+                                <option value="">-- Select --</option>
+                                <option value="left">Left</option>
+                                <option value="left front">Left front</option>
+                                <option value="left back">Left back</option>
+                                <option value="right">Right</option>
+                                <option value="right front">Right front</option>
+                                <option value="right back">Right back</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Condition Question -->
+                <div class="condition-question">
+                    <label for="${prefix}-condition">Which condition do you think you had?</label>
+                    <select id="${prefix}-condition">
+                        <option value="">-- Select --</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="dont_know">Don't know</option>
+                    </select>
+                </div>
+            `;
+            
+            return section;
+        }
+
+        // Create a new TIS section
+        function createTISSection(testNum) {
+            const sectionId = `tis-section-${testNum}`;
+            const prefix = `tis${testNum}`;
+            
+            const section = document.createElement('div');
+            section.className = 'page-section investigator section-wrapper';
+            section.id = sectionId;
+            section.dataset.testNum = testNum;
+            
+            section.innerHTML = `
+                <button type="button" class="remove-test-btn" onclick="removeTISSection(this)">Remove test</button>
+                <div class="section-header">
+                    <div class="section-label">TIS (Test ${testNum})</div>
+                    <div class="header-fields">
+                        <div class="header-field">
+                            <label for="${prefix}-carrier-freq">Carrier Frequency (Hz)</label>
+                            <input type="number" id="${prefix}-carrier-freq" step="1" placeholder="e.g., 2000">
+                        </div>
+                        <div class="header-field">
+                            <label for="${prefix}-mod-freq">Modulation Frequency (Hz)</label>
+                            <input type="number" id="${prefix}-mod-freq" step="1" placeholder="e.g., 5">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="electrode-columns">
+                    <!-- Electrodes 1-2 -->
+                    <div class="electrode-column">
+                        <h2>Electrodes 1 - 2</h2>
+                        <div class="investigator-grid">
+                            <div class="investigator-field">
+                                <label for="${prefix}-e12-threshold">Threshold (mA)</label>
+                                <input type="number" id="${prefix}-e12-threshold" step="0.1" placeholder="e.g., 0.3">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e12-max">Max Applied (mA)</label>
+                                <input type="number" id="${prefix}-e12-max" step="0.1" placeholder="e.g., 0.5">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e12-impedance">Impedance (kΩ)</label>
+                                <input type="number" id="${prefix}-e12-impedance" step="0.1" placeholder="e.g., 8.8">
+                            </div>
+                        </div>
+                        <h3>Did you experience any sensations just now?</h3>
+                        <p class="section-subtitle">Check the box if present.</p>
+                        <div id="${prefix}-e12-sensations-container">${generateSensationsHTML(`${prefix}-e12`)}</div>
+                        <div class="other-section">
+                            <label for="${prefix}-e12-other-sensation">Other (Please Specify):</label>
+                            <input type="text" id="${prefix}-e12-other-sensation" placeholder="Describe any other sensation not listed above">
+                        </div>
+                        <div class="global-location">
+                            <label for="${prefix}-e12-location">Location:</label>
+                            <select id="${prefix}-e12-location">
+                                <option value="">-- Select --</option>
+                                <option value="left">Left</option>
+                                <option value="left front">Left front</option>
+                                <option value="left back">Left back</option>
+                                <option value="right">Right</option>
+                                <option value="right front">Right front</option>
+                                <option value="right back">Right back</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Electrodes 3-4 -->
+                    <div class="electrode-column">
+                        <h2>Electrodes 3 - 4</h2>
+                        <div class="investigator-grid">
+                            <div class="investigator-field">
+                                <label for="${prefix}-e34-threshold">Threshold (mA)</label>
+                                <input type="number" id="${prefix}-e34-threshold" step="0.1" placeholder="e.g., 0.3">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e34-max">Max Applied (mA)</label>
+                                <input type="number" id="${prefix}-e34-max" step="0.1" placeholder="e.g., 0.5">
+                            </div>
+                            <div class="investigator-field">
+                                <label for="${prefix}-e34-impedance">Impedance (kΩ)</label>
+                                <input type="number" id="${prefix}-e34-impedance" step="0.1" placeholder="e.g., 8.8">
+                            </div>
+                        </div>
+                        <h3>Did you experience any sensations just now?</h3>
+                        <p class="section-subtitle">Check the box if present.</p>
+                        <div id="${prefix}-e34-sensations-container">${generateSensationsHTML(`${prefix}-e34`)}</div>
+                        <div class="other-section">
+                            <label for="${prefix}-e34-other-sensation">Other (Please Specify):</label>
+                            <input type="text" id="${prefix}-e34-other-sensation" placeholder="Describe any other sensation not listed above">
+                        </div>
+                        <div class="global-location">
+                            <label for="${prefix}-e34-location">Location:</label>
+                            <select id="${prefix}-e34-location">
+                                <option value="">-- Select --</option>
+                                <option value="left">Left</option>
+                                <option value="left front">Left front</option>
+                                <option value="left back">Left back</option>
+                                <option value="right">Right</option>
+                                <option value="right front">Right front</option>
+                                <option value="right back">Right back</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Condition Question -->
+                <div class="condition-question">
+                    <label for="${prefix}-condition">Which condition do you think you had?</label>
+                    <select id="${prefix}-condition">
+                        <option value="">-- Select --</option>
+                        <option value="real">Real</option>
+                        <option value="placebo">Placebo</option>
+                        <option value="dont_know">Don't know</option>
+                    </select>
+                </div>
+            `;
+            
+            return section;
+        }
+
+        // Save data from all sections of a given type
+        function saveSectionData(containerId, prefix) {
+            const container = document.getElementById(containerId);
+            const sections = container.querySelectorAll('.section-wrapper');
+            const allData = [];
+            
+            sections.forEach(section => {
+                const oldPrefix = `${prefix}${section.dataset.testNum}`;
+                const data = collectSectionData(oldPrefix);
+                allData.push(data);
+            });
+            
+            return allData;
+        }
+
+        // Collect data for a specific prefix
+        function collectSectionData(prefix) {
+            const data = {
+                frequency: document.getElementById(`${prefix}-frequency`)?.value || '',
+                carrier_freq: document.getElementById(`${prefix}-carrier-freq`)?.value || '',
+                mod_freq: document.getElementById(`${prefix}-mod-freq`)?.value || '',
+                condition: document.getElementById(`${prefix}-condition`)?.value || '',
+                e12: {
+                    threshold: document.getElementById(`${prefix}-e12-threshold`)?.value || '',
+                    max_applied: document.getElementById(`${prefix}-e12-max`)?.value || '',
+                    impedance: document.getElementById(`${prefix}-e12-impedance`)?.value || '',
+                    location: document.getElementById(`${prefix}-e12-location`)?.value || '',
+                    other: document.getElementById(`${prefix}-e12-other-sensation`)?.value || '',
+                    sensations: {}
+                },
+                e34: {
+                    threshold: document.getElementById(`${prefix}-e34-threshold`)?.value || '',
+                    max_applied: document.getElementById(`${prefix}-e34-max`)?.value || '',
+                    impedance: document.getElementById(`${prefix}-e34-impedance`)?.value || '',
+                    location: document.getElementById(`${prefix}-e34-location`)?.value || '',
+                    other: document.getElementById(`${prefix}-e34-other-sensation`)?.value || '',
+                    sensations: {}
+                }
+            };
+            
+            // Collect checkbox states
+            Object.entries(sensationCategories).forEach(([categoryName, sensations]) => {
+                sensations.forEach(sensation => {
+                    const sensationId = sensation.toLowerCase().replace(/\s+/g, '_').replace(/[/]/g, '_');
+                    
+                    ['e12', 'e34'].forEach(electrode => {
+                        const checkbox = document.getElementById(`check-${prefix}-${electrode}-${sensationId}`);
+                        if (checkbox && checkbox.checked) {
+                            data[electrode].sensations[sensationId] = true;
+                        }
+                    });
+                });
+            });
+            
+            return data;
+        }
+
+        // Restore data to a section
+        function restoreSectionData(prefix, data) {
+            if (!data) return;
+            
+            if (document.getElementById(`${prefix}-frequency`)) {
+                document.getElementById(`${prefix}-frequency`).value = data.frequency || '';
+            }
+            if (document.getElementById(`${prefix}-carrier-freq`)) {
+                document.getElementById(`${prefix}-carrier-freq`).value = data.carrier_freq || '';
+            }
+            if (document.getElementById(`${prefix}-mod-freq`)) {
+                document.getElementById(`${prefix}-mod-freq`).value = data.mod_freq || '';
+            }
+            document.getElementById(`${prefix}-condition`).value = data.condition || '';
+            
+            ['e12', 'e34'].forEach(electrode => {
+                document.getElementById(`${prefix}-${electrode}-threshold`).value = data[electrode]?.threshold || '';
+                document.getElementById(`${prefix}-${electrode}-max`).value = data[electrode]?.max_applied || '';
+                document.getElementById(`${prefix}-${electrode}-impedance`).value = data[electrode]?.impedance || '';
+                document.getElementById(`${prefix}-${electrode}-location`).value = data[electrode]?.location || '';
+                document.getElementById(`${prefix}-${electrode}-other-sensation`).value = data[electrode]?.other || '';
+                
+                // Restore checkboxes
+                if (data[electrode]?.sensations) {
+                    Object.entries(data[electrode].sensations).forEach(([sensationId, checked]) => {
+                        const checkbox = document.getElementById(`check-${prefix}-${electrode}-${sensationId}`);
+                        if (checkbox) checkbox.checked = checked;
+                    });
+                }
+            });
+        }
+
+        // Renumber all sections of a given type
+        function renumberSections(containerId, prefix, labelBase) {
+            const container = document.getElementById(containerId);
+            const sections = container.querySelectorAll('.section-wrapper');
+            
+            sections.forEach((section, index) => {
+                const newNum = index + 1;
+                section.dataset.testNum = newNum;
+                section.id = `${prefix}-section-${newNum}`;
+                
+                // Update section label
+                const label = section.querySelector('.section-label');
+                if (label) label.textContent = `${labelBase} (Test ${newNum})`;
+            });
+        }
+
+        // Add a new tACS section
+        function addTACSSection() {
+            const container = document.getElementById('tacs-sections-container');
+            const testNum = container.querySelectorAll('.section-wrapper').length + 1;
+            const section = createTACSSection(testNum);
+            container.appendChild(section);
+        }
+
+        // Add a new TIS section
+        function addTISSection() {
+            const container = document.getElementById('tis-sections-container');
+            const testNum = container.querySelectorAll('.section-wrapper').length + 1;
+            const section = createTISSection(testNum);
+            container.appendChild(section);
+        }
+
+        // Remove a tACS section
+        function removeTACSSection(button) {
+            const section = button.closest('.section-wrapper');
+            const container = document.getElementById('tacs-sections-container');
+            
+            // Save data from all sections before removal
+            const savedData = saveSectionData('tacs-sections-container', 'tacs');
+            const sectionIndex = Array.from(container.querySelectorAll('.section-wrapper')).indexOf(section);
+            
+            // Remove the section
+            section.remove();
+            
+            // Remove the saved data for this section
+            savedData.splice(sectionIndex, 1);
+            
+            // Renumber remaining sections
+            renumberSections('tacs-sections-container', 'tacs', 'tACS');
+            
+            // Restore data to renumbered sections
+            const remainingSections = container.querySelectorAll('.section-wrapper');
+            remainingSections.forEach((sec, index) => {
+                const prefix = `tacs${index + 1}`;
+                restoreSectionData(prefix, savedData[index]);
+            });
+        }
+
+        // Remove a TIS section
+        function removeTISSection(button) {
+            const section = button.closest('.section-wrapper');
+            const container = document.getElementById('tis-sections-container');
+            
+            // Save data from all sections before removal
+            const savedData = saveSectionData('tis-sections-container', 'tis');
+            const sectionIndex = Array.from(container.querySelectorAll('.section-wrapper')).indexOf(section);
+            
+            // Remove the section
+            section.remove();
+            
+            // Remove the saved data for this section
+            savedData.splice(sectionIndex, 1);
+            
+            // Renumber remaining sections
+            renumberSections('tis-sections-container', 'tis', 'TIS');
+            
+            // Restore data to renumbered sections
+            const remainingSections = container.querySelectorAll('.section-wrapper');
+            remainingSections.forEach((sec, index) => {
+                const prefix = `tis${index + 1}`;
+                restoreSectionData(prefix, savedData[index]);
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add first sections
+            addTACSSection();
+            addTISSection();
+            
             // Set default date to today
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            
+            // Add button handlers
+            document.getElementById('add-tacs-btn').addEventListener('click', addTACSSection);
+            document.getElementById('add-tis-btn').addEventListener('click', addTISSection);
         });
 
         // Collect sensations data for a specific electrode group
@@ -634,6 +914,63 @@
             };
         }
 
+        // Collect data for a tACS test
+        function collectTACSData(testNum) {
+            const prefix = `tacs${testNum}`;
+            
+            const e12Data = collectSensations(`${prefix}-e12`);
+            const e34Data = collectSensations(`${prefix}-e34`);
+            
+            return {
+                test_number: testNum,
+                frequency: document.getElementById(`${prefix}-frequency`)?.value || '',
+                condition: document.getElementById(`${prefix}-condition`)?.value || '',
+                e12: {
+                    threshold: document.getElementById(`${prefix}-e12-threshold`)?.value || '',
+                    max_applied: document.getElementById(`${prefix}-e12-max`)?.value || '',
+                    impedance: document.getElementById(`${prefix}-e12-impedance`)?.value || '',
+                    sensations: e12Data.sensations,
+                    location: e12Data.location
+                },
+                e34: {
+                    threshold: document.getElementById(`${prefix}-e34-threshold`)?.value || '',
+                    max_applied: document.getElementById(`${prefix}-e34-max`)?.value || '',
+                    impedance: document.getElementById(`${prefix}-e34-impedance`)?.value || '',
+                    sensations: e34Data.sensations,
+                    location: e34Data.location
+                }
+            };
+        }
+
+        // Collect data for a TIS test
+        function collectTISData(testNum) {
+            const prefix = `tis${testNum}`;
+            
+            const e12Data = collectSensations(`${prefix}-e12`);
+            const e34Data = collectSensations(`${prefix}-e34`);
+            
+            return {
+                test_number: testNum,
+                carrier_frequency: document.getElementById(`${prefix}-carrier-freq`)?.value || '',
+                modulation_frequency: document.getElementById(`${prefix}-mod-freq`)?.value || '',
+                condition: document.getElementById(`${prefix}-condition`)?.value || '',
+                e12: {
+                    threshold: document.getElementById(`${prefix}-e12-threshold`)?.value || '',
+                    max_applied: document.getElementById(`${prefix}-e12-max`)?.value || '',
+                    impedance: document.getElementById(`${prefix}-e12-impedance`)?.value || '',
+                    sensations: e12Data.sensations,
+                    location: e12Data.location
+                },
+                e34: {
+                    threshold: document.getElementById(`${prefix}-e34-threshold`)?.value || '',
+                    max_applied: document.getElementById(`${prefix}-e34-max`)?.value || '',
+                    impedance: document.getElementById(`${prefix}-e34-impedance`)?.value || '',
+                    sensations: e34Data.sensations,
+                    location: e34Data.location
+                }
+            };
+        }
+
         // Form submission
         document.getElementById('tacs-tis-form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -657,48 +994,21 @@
                 return;
             }
 
-            // Collect tACS data
-            const tacsE12Data = collectSensations('tacs-e12');
-            const tacsE34Data = collectSensations('tacs-e34');
-            const tacs = {
-                frequency: document.getElementById('tacs-frequency').value,
-                e12: {
-                    threshold: document.getElementById('tacs-e12-threshold').value,
-                    max_applied: document.getElementById('tacs-e12-max').value,
-                    impedance: document.getElementById('tacs-e12-impedance').value,
-                    sensations: tacsE12Data.sensations,
-                    location: tacsE12Data.location
-                },
-                e34: {
-                    threshold: document.getElementById('tacs-e34-threshold').value,
-                    max_applied: document.getElementById('tacs-e34-max').value,
-                    impedance: document.getElementById('tacs-e34-impedance').value,
-                    sensations: tacsE34Data.sensations,
-                    location: tacsE34Data.location
-                }
-            };
+            // Collect all tACS data
+            const tacsTests = [];
+            const tacsSections = document.querySelectorAll('#tacs-sections-container .section-wrapper');
+            tacsSections.forEach(section => {
+                const testNum = parseInt(section.dataset.testNum);
+                tacsTests.push(collectTACSData(testNum));
+            });
 
-            // Collect TIS data
-            const tisE12Data = collectSensations('tis-e12');
-            const tisE34Data = collectSensations('tis-e34');
-            const tis = {
-                carrier_frequency: document.getElementById('tis-carrier-freq').value,
-                modulation_frequency: document.getElementById('tis-mod-freq').value,
-                e12: {
-                    threshold: document.getElementById('tis-e12-threshold').value,
-                    max_applied: document.getElementById('tis-e12-max').value,
-                    impedance: document.getElementById('tis-e12-impedance').value,
-                    sensations: tisE12Data.sensations,
-                    location: tisE12Data.location
-                },
-                e34: {
-                    threshold: document.getElementById('tis-e34-threshold').value,
-                    max_applied: document.getElementById('tis-e34-max').value,
-                    impedance: document.getElementById('tis-e34-impedance').value,
-                    sensations: tisE34Data.sensations,
-                    location: tisE34Data.location
-                }
-            };
+            // Collect all TIS data
+            const tisTests = [];
+            const tisSections = document.querySelectorAll('#tis-sections-container .section-wrapper');
+            tisSections.forEach(section => {
+                const testNum = parseInt(section.dataset.testNum);
+                tisTests.push(collectTISData(testNum));
+            });
 
             // Collect comments
             const comments = document.getElementById('investigator-comments').value;
@@ -713,8 +1023,8 @@
                 target_region: targetRegion,
                 region_side: regionSide,
                 date: date || new Date().toISOString().split('T')[0],
-                tacs: tacs,
-                tis: tis,
+                tacs_tests: tacsTests,
+                tis_tests: tisTests,
                 comments: comments
             };
 
@@ -772,36 +1082,46 @@
                     return checked.join(',');
                 };
                 
-                // Build header and row
-                let header = 'subject,experiment,session,stim_count,date,target_region,region_side,timestamp';
-                let row = `${escapeCSV(subjectId)},${escapeCSV(experiment)},${escapeCSV(session)},${escapeCSV(stimCount)},${escapeCSV(date || timestamp.split('T')[0])},${escapeCSV(targetRegion)},${escapeCSV(regionSide)},${escapeCSV(timestamp)}`;
-                
-                // tACS section
-                header += ',tacs_frequency';
-                row += `,${escapeCSV(tacs.frequency)}`;
+                // Build header (same for all rows)
+                let header = 'subject,experiment,session,stim_count,date,target_region,region_side,test_type,test_number,timestamp';
+                header += ',frequency,carrier_frequency,modulation_frequency,condition';
                 
                 ['e12', 'e34'].forEach(electrode => {
-                    const prefix = `tacs_${electrode}`;
+                    const prefix = `${electrode}`;
                     header += `,${prefix}_threshold,${prefix}_max_applied,${prefix}_impedance,${prefix}_sensations,${prefix}_location,${prefix}_other`;
-                    row += `,${escapeCSV(tacs[electrode].threshold)},${escapeCSV(tacs[electrode].max_applied)},${escapeCSV(tacs[electrode].impedance)},${escapeCSV(getSensationsList(tacs[electrode].sensations))},${escapeCSV(tacs[electrode].location)},${escapeCSV(tacs[electrode].sensations.other || '')}`;
                 });
                 
-                // TIS section
-                header += ',tis_carrier_frequency,tis_modulation_frequency';
-                row += `,${escapeCSV(tis.carrier_frequency)},${escapeCSV(tis.modulation_frequency)}`;
-                
-                ['e12', 'e34'].forEach(electrode => {
-                    const prefix = `tis_${electrode}`;
-                    header += `,${prefix}_threshold,${prefix}_max_applied,${prefix}_impedance,${prefix}_sensations,${prefix}_location,${prefix}_other`;
-                    row += `,${escapeCSV(tis[electrode].threshold)},${escapeCSV(tis[electrode].max_applied)},${escapeCSV(tis[electrode].impedance)},${escapeCSV(getSensationsList(tis[electrode].sensations))},${escapeCSV(tis[electrode].location)},${escapeCSV(tis[electrode].sensations.other || '')}`;
-                });
-                
-                // Comments
                 header += ',comments';
-                row += `,${escapeCSV(comments)}`;
+                
+                // Build rows
+                let rows = '';
+                
+                // tACS rows (one per test)
+                tacsTests.forEach(tacs => {
+                    let tacsRow = `${escapeCSV(subjectId)},${escapeCSV(experiment)},${escapeCSV(session)},${escapeCSV(stimCount)},${escapeCSV(date || timestamp.split('T')[0])},${escapeCSV(targetRegion)},${escapeCSV(regionSide)},tacs,${tacs.test_number},${escapeCSV(timestamp)}`;
+                    tacsRow += `,${escapeCSV(tacs.frequency)},,${escapeCSV(tacs.condition)}`;
+                    
+                    ['e12', 'e34'].forEach(electrode => {
+                        tacsRow += `,${escapeCSV(tacs[electrode].threshold)},${escapeCSV(tacs[electrode].max_applied)},${escapeCSV(tacs[electrode].impedance)},${escapeCSV(getSensationsList(tacs[electrode].sensations))},${escapeCSV(tacs[electrode].location)},${escapeCSV(tacs[electrode].sensations.other || '')}`;
+                    });
+                    tacsRow += `,${escapeCSV(comments)}`;
+                    rows += tacsRow + '\n';
+                });
+                
+                // TIS rows (one per test)
+                tisTests.forEach(tis => {
+                    let tisRow = `${escapeCSV(subjectId)},${escapeCSV(experiment)},${escapeCSV(session)},${escapeCSV(stimCount)},${escapeCSV(date || timestamp.split('T')[0])},${escapeCSV(targetRegion)},${escapeCSV(regionSide)},tis,${tis.test_number},${escapeCSV(timestamp)}`;
+                    tisRow += `,,${escapeCSV(tis.carrier_frequency)},${escapeCSV(tis.modulation_frequency)},${escapeCSV(tis.condition)}`;
+                    
+                    ['e12', 'e34'].forEach(electrode => {
+                        tisRow += `,${escapeCSV(tis[electrode].threshold)},${escapeCSV(tis[electrode].max_applied)},${escapeCSV(tis[electrode].impedance)},${escapeCSV(getSensationsList(tis[electrode].sensations))},${escapeCSV(tis[electrode].location)},${escapeCSV(tis[electrode].sensations.other || '')}`;
+                    });
+                    tisRow += `,${escapeCSV(comments)}`;
+                    rows += tisRow + '\n';
+                });
                 
                 const filename = `sub-${subjectId}_${session}_tacs_tis_sensation.csv`;
-                const blob = new Blob([header + '\n' + row + '\n'], { type: 'text/csv' });
+                const blob = new Blob([header + '\n' + rows], { type: 'text/csv' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
