@@ -57,6 +57,7 @@ _**Note:**_ HTML questionnaire files can be directly shared to participants for 
 | Sleep Diary | ✓ | ✓ | http://localhost:8000/sleep_diary.html |
 | Munich Chronotype | ✓ | ✓ | http://localhost:8000/munich_chronotype.html |
 | TACS/TIS Sensation Testing | | ✓ | http://localhost:8000/tacs_tis_sensation_testing.html |
+| PPIE Questionnaire | | ✓ | http://localhost:8000/ppie.html |
 
 
 _**Note:**_ The sleep diary questionnaire in web form has been adapted for single day entries.
@@ -74,7 +75,8 @@ questionnaires/
 │   ├── tes_side_effects.html
 │   ├── tacs_tis_sensation_testing.html
 │   ├── sleep_diary.html
-│   └── munich_chronotype.html
+│   ├── munich_chronotype.html
+│   └── ppie.html
 ├── editable_PDFs/         # PDF format with entry fields
 └── data/                  # Saved responses (auto-created)
 ```
@@ -264,6 +266,40 @@ All questionnaires include these standard fields:
 - **Reflex:** Pulse, Muscle spasm, Phosphenes, Hair prickle
 
 **Filename format:** `sub-{subject}_{session}_{region}_tacs_tis_sensation.csv`
+
+#### PPIE Questionnaire (Participant Experience)
+
+Participant experience and feedback questionnaire for research studies involving brain stimulation or similar interventions.
+
+| Field | Description |
+|-------|-------------|
+| `subject` | Participant ID |
+| `experiment` | Experiment name (optional) |
+| `session` | Session identifier (ses-01, ses-02, ses-03) |
+| `date` | Date of session |
+| `Q1_understanding` | Pre-study understanding of brain stimulation |
+| `Q2_changed` | Did understanding change? (Yes/Partly/No) |
+| `Q2_surprise` | What surprised them |
+| `Q3_detail_level` | Preferred detail level (basics/moderate/lot) |
+| `Q4_side_effects_info` | Side effect info wanted (semicolon-separated) |
+| `Q4_other` | Other side effect info |
+| `Q5_preference` | Treatment preference (medication/brain stimulation/no preference/neither) |
+| `Q5_why` | Why preference |
+| `Q6_advantages` | Advantages of brain stimulation |
+| `Q7_drawbacks` | Drawbacks or concerns |
+| `Q8_session_length` | Session length rating (too short/about right/a little too long/much too long) |
+| `Q9_acceptable_sessions` | Acceptable number of sessions (1/2-3/4-6/more than 6) |
+| `Q9_comment` | Comment on sessions |
+| `Q10_worked_well` | What worked well |
+| `Q10_difficult` | What was difficult |
+| `Q11_best_part` | Best part of taking part |
+| `Q12_hardest_part` | Hardest part of taking part |
+| `Q13_improvements` | Suggested improvements |
+| `Q14_info_support` | Info/support needed |
+| `Q15_other` | Other feedback |
+
+**Filename format:** `sub-{subject}_{session}_ppie.csv`
+
 
 ## Options
 

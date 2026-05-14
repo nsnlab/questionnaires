@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Experience Questionnaire</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .intro {
+            font-size: 14px;
+            margin-bottom: 25px;
+            text-align: justify;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .metadata-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+        }
+        .metadata-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .metadata-field {
+            flex: 1;
+            min-width: 180px;
+        }
+        .metadata-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .metadata-field input,
+        .metadata-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #333;
+        }
+        .question-item {
+            margin-bottom: 25px;
+        }
+        .question-item:last-child {
+            margin-bottom: 0;
+        }
+        .question-number {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .question-text {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .question-hint {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .radio-item input[type="radio"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .radio-item label {
+            font-size: 14px;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .checkbox-item label {
+            font-size: 14px;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            resize: vertical;
+            min-height: 80px;
+        }
+        textarea.small {
+            min-height: 60px;
+        }
+        textarea.large {
+            min-height: 120px;
+        }
+        .conditional-field {
+            margin-top: 10px;
+            padding-left: 26px;
+            display: none;
+        }
+        .conditional-field.visible {
+            display: block;
+        }
+        .conditional-field label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .other-text-field {
+            display: none;
+            margin-top: 8px;
+            padding-left: 26px;
+        }
+        .other-text-field.visible {
+            display: block;
+        }
+        .other-text-field input {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .text-pair {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .text-pair .text-subfield {
+            flex: 1;
+            min-width: 280px;
+        }
+        .text-subfield label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        .required {
+            color: #c00;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-top: 20px;
+        }
+        .thank-you {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            text-align: center;
+        }
+        .thank-you p {
+            margin-bottom: 10px;
+        }
+        .thank-you .contact {
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Participant Experience Questionnaire</h1>
+    <p class="subtitle">Helping us improve the research participant experience</p>
+    
+    <div class="intro">
+        <p>Thank you for taking part today. Your feedback in this questionnaire will help us design future studies for people with lived experiences of mental health conditions. There are no right or wrong answers, and you can skip any question you would prefer not to answer. The form should take around 5–10 minutes.</p>
+    </div>
+
+    <!-- Metadata Section -->
+    <div class="metadata-section">
+        <h2>Participant Information</h2>
+        <div class="metadata-row">
+            <div class="metadata-field">
+                <label for="participant-id">Participant ID <span class="required">*</span></label>
+                <input type="text" id="participant-id" placeholder="e.g., 001" required>
+            </div>
+            <div class="metadata-field">
+                <label for="experiment">Experiment</label>
+                <input type="text" id="experiment" placeholder="e.g., Experiment name">
+            </div>
+            <div class="metadata-field">
+                <label for="session-date">Session Date <span class="required">*</span></label>
+                <input type="date" id="session-date" required>
+            </div>
+            <div class="metadata-field">
+                <label for="session-number">Session Number <span class="required">*</span></label>
+                <select id="session-number" required>
+                    <option value="">-- Select --</option>
+                    <option value="1">Session 1</option>
+                    <option value="2">Session 2</option>
+                    <option value="3">Session 3</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <form id="ppie-form">
+        <!-- Section A -->
+        <div class="section">
+            <div class="section-title">Section A. Your understanding of brain stimulation</div>
+            
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">1.</span>
+                    Before joining this study, what was your understanding of brain stimulation or neuromodulation?
+                </div>
+                <textarea id="q1" name="q1" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">2.</span>
+                    Has taking part today changed your understanding of what brain stimulation involves?
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" name="q2" id="q2-yes" value="Yes — it is different from what I expected">
+                        <label for="q2-yes">Yes — it is different from what I expected</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q2" id="q2-partly" value="Partly — some things were as I expected, others were not">
+                        <label for="q2-partly">Partly — some things were as I expected, others were not</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q2" id="q2-no" value="No — it was much as I expected">
+                        <label for="q2-no">No — it was much as I expected</label>
+                    </div>
+                </div>
+                <div class="conditional-field" id="q2-followup">
+                    <label for="q2-surprise">If anything surprised you (good or bad), please describe:</label>
+                    <textarea id="q2-surprise" name="q2_surprise" rows="3" placeholder="Enter your response..."></textarea>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">3.</span>
+                    How much detail would someone want to know about how the stimulation works before agreeing to take part?
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" name="q3" id="q3-basics" value="Just the basics (what it does and what to expect)">
+                        <label for="q3-basics">Just the basics (what it does and what to expect)</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q3" id="q3-moderate" value="A moderate amount (mechanism, evidence, risks)">
+                        <label for="q3-moderate">A moderate amount (mechanism, evidence, risks)</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q3" id="q3-detail" value="A lot of technical detail">
+                        <label for="q3-detail">A lot of technical detail</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">4.</span>
+                    What information about possible side effects would be most important to include? (Tick all that apply.)
+                </div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="q4" id="q4-common" value="How common each side effect is">
+                        <label for="q4-common">How common each side effect is</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="q4" id="q4-duration" value="How long side effects typically last">
+                        <label for="q4-duration">How long side effects typically last</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="q4" id="q4-action" value="What to do if a side effect occurs">
+                        <label for="q4-action">What to do if a side effect occurs</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="q4" id="q4-lasting" value="Whether anything could last beyond the session">
+                        <label for="q4-lasting">Whether anything could last beyond the session</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="q4" id="q4-compare" value="How side effects compare with those of medication">
+                        <label for="q4-compare">How side effects compare with those of medication</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="q4" id="q4-other" value="Other">
+                        <label for="q4-other">Other</label>
+                    </div>
+                </div>
+                <div class="other-text-field" id="q4-other-field">
+                    <label for="q4-other-text">Please specify:</label>
+                    <input type="text" id="q4-other-text" placeholder="Enter other information...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section B -->
+        <div class="section">
+            <div class="section-title">Section B. How this compares with other treatment options</div>
+            
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">5.</span>
+                    If you were offered a choice for a mental health condition, would you prefer medication or brain stimulation of the kind used in this study?
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" name="q5" id="q5-medication" value="Medication">
+                        <label for="q5-medication">Medication</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q5" id="q5-stimulation" value="Brain stimulation">
+                        <label for="q5-stimulation">Brain stimulation</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q5" id="q5-nopref" value="No preference / would consider both">
+                        <label for="q5-nopref">No preference / would consider both</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q5" id="q5-neither" value="Neither">
+                        <label for="q5-neither">Neither</label>
+                    </div>
+                </div>
+                <div class="conditional-field visible" id="q5-followup">
+                    <label for="q5-why">Why?</label>
+                    <textarea id="q5-why" name="q5_why" rows="2" placeholder="Enter your response..."></textarea>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">6.</span>
+                    What do you see as the main advantages of this type of brain stimulation, compared with other treatments?
+                </div>
+                <textarea id="q6" name="q6" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">7.</span>
+                    What do you see as the main drawbacks or concerns?
+                </div>
+                <textarea id="q7" name="q7" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+        </div>
+
+        <!-- Section C -->
+        <div class="section">
+            <div class="section-title">Section C. The practical experience of taking part</div>
+            
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">8.</span>
+                    How did you find the overall length of today's session?
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" name="q8" id="q8-short" value="Too short">
+                        <label for="q8-short">Too short</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q8" id="q8-right" value="About right">
+                        <label for="q8-right">About right</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q8" id="q8-little" value="A little too long">
+                        <label for="q8-little">A little too long</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q8" id="q8-much" value="Much too long">
+                        <label for="q8-much">Much too long</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">9.</span>
+                    How many sessions like today's would feel acceptable to you in total?
+                </div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" name="q9" id="q9-1" value="1">
+                        <label for="q9-1">1</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q9" id="q9-2-3" value="2–3">
+                        <label for="q9-2-3">2–3</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q9" id="q9-4-6" value="4–6">
+                        <label for="q9-4-6">4–6</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="q9" id="q9-more" value="More than 6">
+                        <label for="q9-more">More than 6</label>
+                    </div>
+                </div>
+                <div class="conditional-field visible" id="q9-followup">
+                    <label for="q9-comment">What would make additional sessions easier or harder to attend?</label>
+                    <textarea id="q9-comment" name="q9_comment" rows="2" placeholder="Enter your response..."></textarea>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">10.</span>
+                    Was anything about the practical arrangements (travel, timings, the building, the team, what we asked you to do) particularly easy or particularly difficult?
+                </div>
+                <div class="text-pair">
+                    <div class="text-subfield">
+                        <label for="q10-worked">What worked well:</label>
+                        <textarea id="q10-worked" name="q10_worked" rows="3" placeholder="Enter your response..."></textarea>
+                    </div>
+                    <div class="text-subfield">
+                        <label for="q10-difficult">What was difficult or could be improved:</label>
+                        <textarea id="q10-difficult" name="q10_difficult" rows="3" placeholder="Enter your response..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section D -->
+        <div class="section">
+            <div class="section-title">Section D. Designing future research</div>
+            <p class="question-hint">Your perspective on how to make research participation work well for different groups of people is very valuable.</p>
+            
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">11.</span>
+                    If you were recommending this study to someone with a mental health condition, what would you tell them was the best part of taking part?
+                </div>
+                <textarea id="q11" name="q11" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">12.</span>
+                    And what would you tell them was the hardest part?
+                </div>
+                <textarea id="q12" name="q12" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">13.</span>
+                    Is there anything we could have done differently today to make the session more comfortable, clearer, or easier for someone who is unwell?
+                </div>
+                <textarea id="q13" name="q13" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">14.</span>
+                    What information or support do you think someone with a mental health condition would most want before deciding to take part?
+                </div>
+                <textarea id="q14" name="q14" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">
+                    <span class="question-number">15.</span>
+                    Is there anything else you would like us to know that we have not asked about?
+                </div>
+                <textarea id="q15" name="q15" rows="4" placeholder="Enter your response..."></textarea>
+            </div>
+        </div>
+
+        <div class="submit-section">
+            <button type="submit" class="submit-btn">Submit Questionnaire</button>
+        </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+        <strong>Questionnaire saved successfully!</strong><br>
+        File: <span id="filename"></span>
+    </div>
+
+    <div class="error-message" id="error-message">
+        <strong>Error saving questionnaire</strong><br>
+        <span id="error-text"></span>
+    </div>
+
+    <div class="thank-you">
+        <p>Thank you for your feedback.</p>
+        <p class="contact">If you have any further questions or comments about the study, please contact the research team.</p>
+    </div>
+
+    <script>
+        // Q2: Show follow-up textarea when "Yes" or "Partly" is selected
+        document.querySelectorAll('input[name="q2"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const followup = document.getElementById('q2-followup');
+                if (this.value.includes('Yes') || this.value.includes('Partly')) {
+                    followup.classList.add('visible');
+                } else {
+                    followup.classList.remove('visible');
+                }
+            });
+        });
+
+        // Q4: Show "other" text field when "Other" checkbox is checked
+        document.getElementById('q4-other').addEventListener('change', function() {
+            const otherField = document.getElementById('q4-other-field');
+            if (this.checked) {
+                otherField.classList.add('visible');
+            } else {
+                otherField.classList.remove('visible');
+                document.getElementById('q4-other-text').value = '';
+            }
+        });
+
+        // Form submission
+        document.getElementById('ppie-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get metadata
+            const participantId = document.getElementById('participant-id').value.trim();
+            const experiment = document.getElementById('experiment').value.trim();
+            const sessionDate = document.getElementById('session-date').value;
+            const sessionNumber = document.getElementById('session-number').value;
+
+            // Validate metadata
+            if (!participantId) {
+                alert('Please enter a Participant ID');
+                return;
+            }
+            if (!sessionDate) {
+                alert('Please select a Session Date');
+                return;
+            }
+            if (!sessionNumber) {
+                alert('Please select a Session Number');
+                return;
+            }
+
+            // Collect responses
+            const responses = {};
+
+            // Q1: Textarea
+            responses.Q1_understanding = document.getElementById('q1').value.trim();
+
+            // Q2: Radio + conditional textarea
+            const q2Radio = document.querySelector('input[name="q2"]:checked');
+            responses.Q2_changed = q2Radio ? q2Radio.value : '';
+            responses.Q2_surprise = document.getElementById('q2-surprise').value.trim();
+
+            // Q3: Radio
+            const q3Radio = document.querySelector('input[name="q3"]:checked');
+            responses.Q3_detail_level = q3Radio ? q3Radio.value : '';
+
+            // Q4: Checkboxes + other text
+            const q4Checkboxes = document.querySelectorAll('input[name="q4"]:checked');
+            responses.Q4_side_effects_info = Array.from(q4Checkboxes).map(cb => cb.value).join(';');
+            if (document.getElementById('q4-other').checked) {
+                responses.Q4_other = document.getElementById('q4-other-text').value.trim();
+            }
+
+            // Q5: Radio + why
+            const q5Radio = document.querySelector('input[name="q5"]:checked');
+            responses.Q5_preference = q5Radio ? q5Radio.value : '';
+            responses.Q5_why = document.getElementById('q5-why').value.trim();
+
+            // Q6: Textarea
+            responses.Q6_advantages = document.getElementById('q6').value.trim();
+
+            // Q7: Textarea
+            responses.Q7_drawbacks = document.getElementById('q7').value.trim();
+
+            // Q8: Radio
+            const q8Radio = document.querySelector('input[name="q8"]:checked');
+            responses.Q8_session_length = q8Radio ? q8Radio.value : '';
+
+            // Q9: Radio + comment
+            const q9Radio = document.querySelector('input[name="q9"]:checked');
+            responses.Q9_acceptable_sessions = q9Radio ? q9Radio.value : '';
+            responses.Q9_comment = document.getElementById('q9-comment').value.trim();
+
+            // Q10: Two textareas
+            responses.Q10_worked_well = document.getElementById('q10-worked').value.trim();
+            responses.Q10_difficult = document.getElementById('q10-difficult').value.trim();
+
+            // Q11-15: Textareas
+            responses.Q11_best_part = document.getElementById('q11').value.trim();
+            responses.Q12_hardest_part = document.getElementById('q12').value.trim();
+            responses.Q13_improvements = document.getElementById('q13').value.trim();
+            responses.Q14_info_support = document.getElementById('q14').value.trim();
+            responses.Q15_other = document.getElementById('q15').value.trim();
+
+            // Prepare data for server
+            const session = 'ses-0' + sessionNumber;
+            const data = {
+                subject: participantId,
+                experiment: experiment,
+                session: session,
+                date: sessionDate,
+                type: 'ppie',
+                responses: responses
+            };
+
+            // Try server first, fallback to download
+            let savedToServer = false;
+
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        savedToServer = true;
+                        document.getElementById('filename').textContent =
+                            `sub-${participantId}/${session}/beh/${result.filename}`;
+                        document.getElementById('success-message').style.display = 'block';
+                        document.getElementById('error-message').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                // Server not available, fall through to download
+                console.log('Server not available, using download fallback');
+            }
+
+            // Fallback: download CSV
+            if (!savedToServer) {
+                // Generate CSV
+                const headers = [
+                    'subject', 'experiment', 'session', 'date',
+                    'Q1_understanding', 'Q2_changed', 'Q2_surprise',
+                    'Q3_detail_level', 'Q4_side_effects_info', 'Q4_other',
+                    'Q5_preference', 'Q5_why', 'Q6_advantages', 'Q7_drawbacks',
+                    'Q8_session_length', 'Q9_acceptable_sessions', 'Q9_comment',
+                    'Q10_worked_well', 'Q10_difficult',
+                    'Q11_best_part', 'Q12_hardest_part', 'Q13_improvements',
+                    'Q14_info_support', 'Q15_other', 'timestamp'
+                ];
+
+                const timestamp = new Date().toISOString();
+                const row = [
+                    participantId, experiment, session, sessionDate,
+                    responses.Q1_understanding, responses.Q2_changed, responses.Q2_surprise,
+                    responses.Q3_detail_level, responses.Q4_side_effects_info, responses.Q4_other || '',
+                    responses.Q5_preference, responses.Q5_why, responses.Q6_advantages, responses.Q7_drawbacks,
+                    responses.Q8_session_length, responses.Q9_acceptable_sessions, responses.Q9_comment,
+                    responses.Q10_worked_well, responses.Q10_difficult,
+                    responses.Q11_best_part, responses.Q12_hardest_part, responses.Q13_improvements,
+                    responses.Q14_info_support, responses.Q15_other, timestamp
+                ];
+
+                // Escape fields containing commas or quotes
+                const escapeCsv = (val) => {
+                    const str = String(val);
+                    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                        return '"' + str.replace(/"/g, '""') + '"';
+                    }
+                    return str;
+                };
+
+                const csvHeader = headers.join(',');
+                const csvRow = row.map(escapeCsv).join(',');
+                const csvData = csvHeader + '\n' + csvRow + '\n';
+
+                const filename = `sub-${participantId}_${session}_ppie.csv`;
+                const blob = new Blob([csvData], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                document.getElementById('filename').textContent = filename + ' (downloaded)';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+            }
+
+            // Scroll to success message
+            document.getElementById('success-message').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

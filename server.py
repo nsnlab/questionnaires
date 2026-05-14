@@ -346,6 +346,57 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     writer.writerow(headers)
                     writer.writerow(row)
                     
+                elif questionnaire_type == 'ppie':
+                    # PPIE Questionnaire - Participant Experience
+                    # Session-based filename (not time-based)
+                    filename = f"sub-{subject}_{session}_ppie.csv"
+                    filepath = os.path.join(bids_dir, filename)
+                    
+                    experiment = form_data.get('experiment', '')
+                    date_val = form_data.get('date', '')
+                    
+                    headers = [
+                        'subject', 'experiment', 'session', 'date',
+                        'Q1_understanding', 'Q2_changed', 'Q2_surprise',
+                        'Q3_detail_level', 'Q4_side_effects_info', 'Q4_other',
+                        'Q5_preference', 'Q5_why', 'Q6_advantages', 'Q7_drawbacks',
+                        'Q8_session_length', 'Q9_acceptable_sessions', 'Q9_comment',
+                        'Q10_worked_well', 'Q10_difficult',
+                        'Q11_best_part', 'Q12_hardest_part', 'Q13_improvements',
+                        'Q14_info_support', 'Q15_other', 'timestamp'
+                    ]
+                    
+                    row = [
+                        subject,
+                        experiment,
+                        session,
+                        date_val,
+                        responses.get('Q1_understanding', '').replace('"', '""'),
+                        responses.get('Q2_changed', ''),
+                        responses.get('Q2_surprise', '').replace('"', '""'),
+                        responses.get('Q3_detail_level', ''),
+                        responses.get('Q4_side_effects_info', ''),
+                        responses.get('Q4_other', '').replace('"', '""'),
+                        responses.get('Q5_preference', ''),
+                        responses.get('Q5_why', '').replace('"', '""'),
+                        responses.get('Q6_advantages', '').replace('"', '""'),
+                        responses.get('Q7_drawbacks', '').replace('"', '""'),
+                        responses.get('Q8_session_length', ''),
+                        responses.get('Q9_acceptable_sessions', ''),
+                        responses.get('Q9_comment', '').replace('"', '""'),
+                        responses.get('Q10_worked_well', '').replace('"', '""'),
+                        responses.get('Q10_difficult', '').replace('"', '""'),
+                        responses.get('Q11_best_part', '').replace('"', '""'),
+                        responses.get('Q12_hardest_part', '').replace('"', '""'),
+                        responses.get('Q13_improvements', '').replace('"', '""'),
+                        responses.get('Q14_info_support', '').replace('"', '""'),
+                        responses.get('Q15_other', '').replace('"', '""'),
+                        timestamp
+                    ]
+                    
+                    writer.writerow(headers)
+                    writer.writerow(row)
+                    
                 else:
                     headers = ['subject', 'session', 'time'] + list(responses.keys()) + ['timestamp']
                     writer.writerow(headers)
