@@ -17,6 +17,18 @@ from datetime import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
+
+def format_date_ddmmyyyy(iso_date):
+    """Convert ISO date (YYYY-MM-DD) to DD/MM/YYYY format.
+    Returns original value if not a valid ISO date."""
+    if not iso_date:
+        return ''
+    try:
+        dt = datetime.strptime(iso_date, '%Y-%m-%d')
+        return dt.strftime('%d/%m/%Y')
+    except ValueError:
+        return iso_date
+
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, 'data')
@@ -80,7 +92,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                 
                 if questionnaire_type == 'leeds':
                     experiment = form_data.get('experiment', '')
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'gts_difficulty', 'gts_speed', 'gts_sleepiness', 
                                     'qos_restless', 'qos_wakeful', 'afs_difficulty', 'afs_time', 
                                     'bfw_wakeup', 'bfw_current', 'bfw_balance', 'timestamp'])
@@ -97,12 +109,12 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     
                 elif questionnaire_type == 'kss':
                     experiment = form_data.get('experiment', '')
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'KSS', 'timestamp'])
                     writer.writerow([subject, experiment, session, time, date_val, responses.get('KSS', ''), timestamp])
                     
                 elif questionnaire_type == 'vams':
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'happy', 'sad', 'calm', 'tense', 'energetic', 'sleepy', 'timestamp'])
                     writer.writerow([
                         subject,
@@ -117,7 +129,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     
                 elif questionnaire_type == 'tes_side_effects':
                     stim_count = form_data.get('stim_count', '0')
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     target_region = form_data.get('target_region', '')
                     region_side = form_data.get('region_side', '')
                     tes_related = form_data.get('tes_related', '')
@@ -206,7 +218,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     
                 elif questionnaire_type == 'tacs_tis_sensation_testing':
                     stim_count = form_data.get('stim_count', '0')
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     target_region = form_data.get('target_region', '')
                     region_side = form_data.get('region_side', '')
                     experiment = form_data.get('experiment', '')
@@ -292,7 +304,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                         form_data.get('experiment', ''),
                         session,
                         time,
-                        form_data.get('date', ''),
+                        format_date_ddmmyyyy(form_data.get('date', '')),
                         form_data.get('bedtime', ''),
                         form_data.get('sleep_onset_latency', '0'),
                         form_data.get('awakenings', '0'),
@@ -313,7 +325,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     writer.writerow(row)
                     
                 elif questionnaire_type == 'mctq':
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     headers = ['subject', 'experiment', 'session', 'date', 'regular_work', 'work_days',
                               'work_bedtime', 'work_sleep_ready', 'work_sleep_latency', 'work_wake_time',
                               'work_rise_latency', 'work_alarm', 'work_alarm_before',
@@ -355,7 +367,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     filepath = os.path.join(bids_dir, filename)
                     
                     experiment = form_data.get('experiment', '')
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     
                     headers = [
                         'subject', 'experiment', 'session', 'date',
@@ -406,7 +418,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     filepath = os.path.join(bids_dir, filename)
                     
                     experiment = form_data.get('experiment', '')
-                    date_val = form_data.get('date', '')
+                    date_val = format_date_ddmmyyyy(form_data.get('date', ''))
                     
                     headers = [
                         'subject', 'experiment', 'session', 'date',
