@@ -58,7 +58,7 @@ _**Note:**_ HTML questionnaire files can be directly shared to participants for 
 | Munich Chronotype | ✓ | ✓ | http://localhost:8000/munich_chronotype.html |
 | TACS/TIS Sensation Testing | | ✓ | http://localhost:8000/tacs_tis_sensation_testing.html |
 | PPIE Questionnaire | | ✓ | http://localhost:8000/ppie.html |
-
+| Dream Structured Interview | ✓ | ✓ | http://localhost:8000/dream.html |
 
 _**Note:**_ The sleep diary questionnaire in web form has been adapted for single day entries.
 
@@ -76,7 +76,8 @@ questionnaires/
 │   ├── tacs_tis_sensation_testing.html
 │   ├── sleep_diary.html
 │   ├── munich_chronotype.html
-│   └── ppie.html
+│   ├── ppie.html
+│   └── dream.html
 ├── editable_PDFs/         # PDF format with entry fields
 └── data/                  # Saved responses (auto-created)
 ```
@@ -300,6 +301,39 @@ Participant experience and feedback questionnaire for research studies involving
 
 **Filename format:** `sub-{subject}_{session}_ppie.csv`
 
+#### Dream Structured Interview (Intra-Sleep Conscious Experience)
+
+Adapted from Siclari et al. (2013). Assesses conscious experiences during sleep upon awakening. This questionnaire is always administered post-sleep (no time argument needed).
+
+**Experience Type (required):**
+| Field | Description |
+|-------|-------------|
+| `experience_type` | Type of experience: `NCE` (no conscious experiences), `CEWR` (experiences without recall), `CE` (conscious experiences) |
+
+**Quantitative Features (only if `experience_type = CE`):**
+| Field | Description |
+|-------|-------------|
+| `ce_duration_value` | For how long were you having continuous experiences before awakening? (number) |
+| `ce_duration_unit` | Unit: `seconds`, `minutes`, `hours` |
+| `ce_recent_value` | How long did the most recent experience last? (number) |
+| `ce_recent_unit` | Unit: `seconds`, `minutes`, `hours` |
+| `ce_recall_value` | How far back in time can you specifically recall? (number) |
+| `ce_recall_unit` | Unit: `seconds`, `minutes`, `hours` |
+| `ce_richness_value` | How long would it take to recount the experience? (number) |
+| `ce_richness_unit` | Unit: `seconds`, `minutes`, `hours` |
+
+**Cognitive Dimensions (1-5 scales, only if `experience_type = CE`):**
+| Field | Question |
+|-------|-----------|
+| `perceiving` | How much were you perceiving rather than thinking? (1=none, 5=maximal) |
+| `thinking` | How much were you thinking rather than perceiving? (1=none, 5=maximal) |
+| `self` | To what degree was this experience centered on yourself rather than on the environment? (1=none, 5=maximal) |
+| `environment` | To what degree was this experience centered on the environment rather than on yourself? (1=none, 5=maximal) |
+| `awareness` | To what degree were you aware that these experiences were not real? (1=not at all, 5=fully) |
+| `control` | To what degree did you have voluntary control over the content of the experience? (1=not at all, 5=fully) |
+| `ce_description` | Optional text description of experience |
+
+**Filename format:** `sub-{subject}_{session}_dream.csv`
 
 ## Options
 

@@ -79,6 +79,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                 writer = csv.writer(f)
                 
                 if questionnaire_type == 'leeds':
+                    experiment = form_data.get('experiment', '')
                     date_val = form_data.get('date', '')
                     writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'gts_difficulty', 'gts_speed', 'gts_sleepiness', 
                                     'qos_restless', 'qos_wakeful', 'afs_difficulty', 'afs_time', 
@@ -95,6 +96,7 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                     ])
                     
                 elif questionnaire_type == 'kss':
+                    experiment = form_data.get('experiment', '')
                     date_val = form_data.get('date', '')
                     writer.writerow(['subject', 'experiment', 'session', 'time', 'date', 'KSS', 'timestamp'])
                     writer.writerow([subject, experiment, session, time, date_val, responses.get('KSS', ''), timestamp])
@@ -391,6 +393,55 @@ class QuestionnaireHandler(SimpleHTTPRequestHandler):
                         responses.get('Q13_improvements', '').replace('"', '""'),
                         responses.get('Q14_info_support', '').replace('"', '""'),
                         responses.get('Q15_other', '').replace('"', '""'),
+                        timestamp
+                    ]
+                    
+                    writer.writerow(headers)
+                    writer.writerow(row)
+                    
+                elif questionnaire_type == 'dream':
+                    # Dream Questionnaire - Intra-Sleep Conscious Experience
+                    # Session-based filename (not time-based) - always post-sleep
+                    filename = f"sub-{subject}_{session}_dream.csv"
+                    filepath = os.path.join(bids_dir, filename)
+                    
+                    experiment = form_data.get('experiment', '')
+                    date_val = form_data.get('date', '')
+                    
+                    headers = [
+                        'subject', 'experiment', 'session', 'date',
+                        'experience_type',
+                        'ce_duration_value', 'ce_duration_unit',
+                        'ce_recent_value', 'ce_recent_unit',
+                        'ce_recall_value', 'ce_recall_unit',
+                        'ce_richness_value', 'ce_richness_unit',
+                        'perceiving', 'thinking', 'self', 'environment',
+                        'awareness', 'control',
+                        'ce_description',
+                        'timestamp'
+                    ]
+                    
+                    row = [
+                        subject,
+                        experiment,
+                        session,
+                        date_val,
+                        responses.get('experience_type', ''),
+                        responses.get('ce_duration_value', ''),
+                        responses.get('ce_duration_unit', ''),
+                        responses.get('ce_recent_value', ''),
+                        responses.get('ce_recent_unit', ''),
+                        responses.get('ce_recall_value', ''),
+                        responses.get('ce_recall_unit', ''),
+                        responses.get('ce_richness_value', ''),
+                        responses.get('ce_richness_unit', ''),
+                        responses.get('perceiving', ''),
+                        responses.get('thinking', ''),
+                        responses.get('self', ''),
+                        responses.get('environment', ''),
+                        responses.get('awareness', ''),
+                        responses.get('control', ''),
+                        responses.get('ce_description', '').replace('"', '""'),
                         timestamp
                     ]
                     

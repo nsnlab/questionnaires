@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intra-Sleep Conscious Experience Questionnaire</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .instructions {
+            font-size: 14px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .metadata-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+        }
+        .metadata-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .metadata-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .metadata-field {
+            flex: 1;
+            min-width: 180px;
+        }
+        .metadata-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .metadata-field input,
+        .metadata-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #333;
+        }
+        .question-item {
+            margin-bottom: 20px;
+        }
+        .question-item:last-child {
+            margin-bottom: 0;
+        }
+        .question-text {
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .question-hint {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .radio-item:hover {
+            background-color: #f5f5f5;
+        }
+        .radio-item.selected {
+            background-color: #e8e8e8;
+            border-color: #000;
+        }
+        .radio-item input[type="radio"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .radio-item label {
+            font-size: 14px;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        .radio-item-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .time-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .time-input-group input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .time-input-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .scale-container {
+            margin-bottom: 15px;
+        }
+        .scale-question {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .scale-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 25px 0 5px 0;
+        }
+        .scale-label {
+            flex: 0 0 80px;
+            font-size: 12px;
+            text-align: right;
+        }
+        .scale-label.right {
+            text-align: left;
+        }
+        .scale-slider {
+            flex: 1;
+            position: relative;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #ddd;
+            outline: none;
+            cursor: pointer;
+            border-radius: 0;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            cursor: pointer;
+            border-radius: 0;
+            margin-top: -6px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #000;
+            cursor: pointer;
+            border-radius: 0;
+            border: none;
+        }
+        .scale-value {
+            position: absolute;
+            right: 0;
+            top: -22px;
+            font-size: 12px;
+            color: #666;
+        }
+        .scale-numbers {
+            display: flex;
+            margin-top: 3px;
+            font-size: 11px;
+            color: #666;
+            padding-left: 90px;
+            padding-right: 90px;
+        }
+        .scale-numbers span {
+            flex: 1;
+            text-align: center;
+        }
+        .scale-numbers span:first-child {
+            text-align: left;
+        }
+        .scale-numbers span:last-child {
+            text-align: right;
+        }
+            font-size: 12px;
+            color: #666;
+        }
+        .scale-numbers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3px;
+            font-size: 11px;
+            color: #666;
+        }
+        .scale-numbers span {
+            flex: 1;
+            text-align: center;
+        }
+        .scale-numbers span:first-child {
+            text-align: left;
+        }
+        .scale-numbers span:last-child {
+            text-align: right;
+        }
+        .conditional-section {
+            display: none;
+        }
+        .conditional-section.visible {
+            display: block;
+        }
+        .end-message {
+            display: none;
+            padding: 20px;
+            background-color: #e8f4e8;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .end-message.visible {
+            display: block;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .submit-btn {
+            padding: 12px 40px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #333;
+        }
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .required {
+            color: #c00;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Intra-Sleep Conscious Experience Questionnaire</h1>
+    <p class="subtitle">Adapted from Siclari et al. (2013)</p>
+
+    <div class="instructions">
+        This questionnaire assesses your conscious experiences during sleep. 
+        "Experience" refers to any kind of mental activity, including thoughts, dreams, perceptions, emotions, etc.
+    </div>
+
+    <!-- Metadata Section -->
+    <div class="metadata-section">
+        <h2>Participant Information</h2>
+        <div class="metadata-row">
+            <div class="metadata-field">
+                <label for="subject-id">Subject ID <span class="required">*</span></label>
+                <input type="text" id="subject-id" placeholder="e.g., 001" required>
+            </div>
+            <div class="metadata-field">
+                <label for="experiment">Experiment</label>
+                <input type="text" id="experiment" placeholder="e.g., MINTS">
+            </div>
+            <div class="metadata-field">
+                <label for="session">Session <span class="required">*</span></label>
+                <select id="session" required>
+                    <option value="">-- Select --</option>
+                    <option value="ses-01">Session 1 (ses-01)</option>
+                    <option value="ses-02">Session 2 (ses-02)</option>
+                    <option value="ses-03">Session 3 (ses-03)</option>
+                    <option value="ses-04">Session 4 (ses-04)</option>
+                    <option value="ses-05">Session 5 (ses-05)</option>
+                    <option value="ses-06">Session 6 (ses-06)</option>
+                </select>
+            </div>
+            <div class="metadata-field">
+                <label for="date">Date</label>
+                <input type="date" id="date">
+            </div>
+        </div>
+    </div>
+
+    <form id="dream-form">
+        <!-- Section 1: Presence/Absence of Conscious Experiences -->
+        <div class="section">
+            <div class="section-title">Presence or Absence of Conscious Experiences</div>
+            
+            <div class="question-item">
+                <div class="question-text">What was the last thing going through your mind prior to awakening?</div>
+                <p class="question-hint">Select the option that best describes your experience</p>
+                
+                <div class="radio-group" id="experience-type-group">
+                    <div class="radio-item" data-value="NCE">
+                        <input type="radio" name="experience_type" id="exp-nce" value="NCE">
+                        <label for="exp-nce">
+                            <strong>No conscious experiences (NCE)</strong>
+                            <div class="radio-item-description">I don't remember any mental activity before awakening</div>
+                        </label>
+                    </div>
+                    <div class="radio-item" data-value="CEWR">
+                        <input type="radio" name="experience_type" id="exp-cewr" value="CEWR">
+                        <label for="exp-cewr">
+                            <strong>Conscious experiences without recall (CEWR)</strong>
+                            <div class="radio-item-description">I experienced something but cannot remember the content</div>
+                        </label>
+                    </div>
+                    <div class="radio-item" data-value="CE">
+                        <input type="radio" name="experience_type" id="exp-ce" value="CE">
+                        <label for="exp-ce">
+                            <strong>Conscious experiences (CE)</strong>
+                            <div class="radio-item-description">I can describe the content of the experiences</div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End message for NCE/CEWR -->
+        <div class="end-message" id="end-message">
+            <strong>Thank you for completing the questionnaire.</strong><br>
+            No further questions are needed based on your response.
+        </div>
+
+        <!-- Section 2: Quantitative Features (only if CE) -->
+        <div class="section conditional-section" id="quantitative-section">
+            <div class="section-title">Quantitative Features of Conscious Experiences</div>
+            <p class="question-hint" style="margin-bottom: 15px;">Please provide your best estimate in units of time (seconds, minutes, or hours).</p>
+
+            <div class="question-item">
+                <div class="question-text">For how long were you having continuous experiences before awakening?</div>
+                <p class="question-hint">This refers to how long you were experiencing something, regardless of specific content.</p>
+                <div class="time-input-group">
+                    <input type="number" id="ce-duration-value" min="0" step="1" placeholder="Number">
+                    <select id="ce-duration-unit">
+                        <option value="seconds">Seconds</option>
+                        <option value="minutes" selected>Minutes</option>
+                        <option value="hours">Hours</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">How long did the most recent experience last?</div>
+                <p class="question-hint">This refers to the specific experience just before awakening.</p>
+                <div class="time-input-group">
+                    <input type="number" id="ce-recent-value" min="0" step="1" placeholder="Number">
+                    <select id="ce-recent-unit">
+                        <option value="seconds">Seconds</option>
+                        <option value="minutes" selected>Minutes</option>
+                        <option value="hours">Hours</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">How far back in time can you specifically recall?</div>
+                <p class="question-hint">This assesses the narrative thread and continuity of your experience.</p>
+                <div class="time-input-group">
+                    <input type="number" id="ce-recall-value" min="0" step="1" placeholder="Number">
+                    <select id="ce-recall-unit">
+                        <option value="seconds">Seconds</option>
+                        <option value="minutes" selected>Minutes</option>
+                        <option value="hours">Hours</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="question-item">
+                <div class="question-text">How long would it take to recount the experience?</div>
+                <p class="question-hint">This is different from duration. A long uneventful dream, such as driving for hours in a car, could be recounted in a few seconds even though the experience was much longer.</p>
+                <div class="time-input-group">
+                    <input type="number" id="ce-richness-value" min="0" step="1" placeholder="Number">
+                    <select id="ce-richness-unit">
+                        <option value="seconds" selected>Seconds</option>
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Cognitive Dimensions (only if CE) -->
+        <div class="section conditional-section" id="cognitive-section">
+            <div class="section-title">Cognitive Dimensions of Conscious Experiences</div>
+            <p class="question-hint" style="margin-bottom: 20px;">Rate each dimension on a scale from 1 (none/minimal) to 5 (maximal).</p>
+
+            <div class="scale-container">
+                <div class="scale-question">How much were you <strong>perceiving</strong> rather than thinking?</div>
+                <p class="question-hint">E.g. having sensory experiences, including sights, sounds, pain, smells, etc.</p>
+                <div class="scale-wrapper">
+                    <span class="scale-label">None (1)</span>
+                    <div class="scale-slider">
+                        <input type="range" id="perceiving" min="1" max="5" value="3">
+                        <span class="scale-value" id="perceiving-value">3</span>
+                    </div>
+                    <span class="scale-label right">Maximal (5)</span>
+                </div>
+                <div class="scale-numbers">
+                    <span>1</span><span></span><span></span><span></span><span>5</span>
+                </div>
+            </div>
+
+            <div class="scale-container">
+                <div class="scale-question">How much were you <strong>thinking</strong> rather than perceiving?</div>
+                <p class="question-hint">E.g. having ideas, opinions, worries, performing mental calculations, etc.</p>
+                <div class="scale-wrapper">
+                    <span class="scale-label">None (1)</span>
+                    <div class="scale-slider">
+                        <input type="range" id="thinking" min="1" max="5" value="3">
+                        <span class="scale-value" id="thinking-value">3</span>
+                    </div>
+                    <span class="scale-label right">Maximal (5)</span>
+                </div>
+                <div class="scale-numbers">
+                    <span>1</span><span></span><span></span><span></span><span>5</span>
+                </div>
+            </div>
+
+            <div class="scale-container">
+                <div class="scale-question">To what degree was this experience centered on <strong>yourself</strong> rather than on the environment?</div>
+                <div class="scale-wrapper">
+                    <span class="scale-label">None (1)</span>
+                    <div class="scale-slider">
+                        <input type="range" id="self" min="1" max="5" value="3">
+                        <span class="scale-value" id="self-value">3</span>
+                    </div>
+                    <span class="scale-label right">Maximal (5)</span>
+                </div>
+                <div class="scale-numbers">
+                    <span>1</span><span></span><span></span><span></span><span>5</span>
+                </div>
+            </div>
+
+            <div class="scale-container">
+                <div class="scale-question">To what degree was this experience centered on the <strong>environment</strong> rather than on yourself?</div>
+                <div class="scale-wrapper">
+                    <span class="scale-label">None (1)</span>
+                    <div class="scale-slider">
+                        <input type="range" id="environment" min="1" max="5" value="3">
+                        <span class="scale-value" id="environment-value">3</span>
+                    </div>
+                    <span class="scale-label right">Maximal (5)</span>
+                </div>
+                <div class="scale-numbers">
+                    <span>1</span><span></span><span></span><span></span><span>5</span>
+                </div>
+            </div>
+
+            <div class="scale-container">
+                <div class="scale-question">To what degree were you <strong>aware that these experiences were not real</strong>?</div>
+                <div class="scale-wrapper">
+                    <span class="scale-label">Not at all (1)</span>
+                    <div class="scale-slider">
+                        <input type="range" id="awareness" min="1" max="5" value="3">
+                        <span class="scale-value" id="awareness-value">3</span>
+                    </div>
+                    <span class="scale-label right">Fully (5)</span>
+                </div>
+                <div class="scale-numbers">
+                    <span>1</span><span></span><span></span><span></span><span>5</span>
+                </div>
+            </div>
+
+            <div class="scale-container">
+                <div class="scale-question">To what degree did you have <strong>voluntary control</strong> over the content of the experience?</div>
+                <div class="scale-wrapper">
+                    <span class="scale-label">Not at all (1)</span>
+                    <div class="scale-slider">
+                        <input type="range" id="control" min="1" max="5" value="3">
+                        <span class="scale-value" id="control-value">3</span>
+                    </div>
+                    <span class="scale-label right">Fully (5)</span>
+                </div>
+                <div class="scale-numbers">
+                    <span>1</span><span></span><span></span><span></span><span>5</span>
+                </div>
+            </div>
+
+            <!-- Optional Description -->
+            <div class="question-item" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                <div class="question-text">Optional: Briefly describe your experience</div>
+                <p class="question-hint">If you wish, you can provide a short description of what you experienced.</p>
+                <textarea id="ce-description" placeholder="Enter your description here..." rows="4"></textarea>
+            </div>
+        </div>
+
+        <div class="submit-section">
+            <button type="submit" class="submit-btn" id="submit-btn">Submit Questionnaire</button>
+        </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+        <strong>Questionnaire saved successfully!</strong><br>
+        File: <span id="filename"></span>
+    </div>
+
+    <div class="error-message" id="error-message">
+        <strong>Error saving questionnaire</strong><br>
+        <span id="error-text"></span>
+    </div>
+
+    <script>
+        // Handle radio button selection styling
+        document.querySelectorAll('.radio-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+                
+                // Update styling
+                document.querySelectorAll('.radio-item').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                
+                // Show/hide conditional sections
+                updateConditionalSections();
+            });
+        });
+
+        // Update slider value displays
+        ['perceiving', 'thinking', 'self', 'environment', 'awareness', 'control'].forEach(id => {
+            const slider = document.getElementById(id);
+            const valueDisplay = document.getElementById(`${id}-value`);
+            slider.addEventListener('input', () => {
+                valueDisplay.textContent = slider.value;
+            });
+        });
+
+        // Show/hide conditional sections based on experience type
+        function updateConditionalSections() {
+            const experienceType = document.querySelector('input[name="experience_type"]:checked');
+            const quantitativeSection = document.getElementById('quantitative-section');
+            const cognitiveSection = document.getElementById('cognitive-section');
+            const endMessage = document.getElementById('end-message');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (!experienceType) {
+                quantitativeSection.classList.remove('visible');
+                cognitiveSection.classList.remove('visible');
+                endMessage.classList.remove('visible');
+                return;
+            }
+            
+            const value = experienceType.value;
+            
+            if (value === 'CE') {
+                quantitativeSection.classList.add('visible');
+                cognitiveSection.classList.add('visible');
+                endMessage.classList.remove('visible');
+                submitBtn.style.display = 'inline-block';
+            } else {
+                quantitativeSection.classList.remove('visible');
+                cognitiveSection.classList.remove('visible');
+                endMessage.classList.add('visible');
+                submitBtn.style.display = 'inline-block';
+            }
+        }
+
+        // Form submission
+        document.getElementById('dream-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get metadata
+            const subjectId = document.getElementById('subject-id').value.trim();
+            const experiment = document.getElementById('experiment').value.trim();
+            const session = document.getElementById('session').value;
+
+            // Validate metadata
+            if (!subjectId) {
+                alert('Please enter a Subject ID');
+                return;
+            }
+            if (!session) {
+                alert('Please select a Session');
+                return;
+            }
+
+            const date = document.getElementById('date').value;
+            const time = 'post-sleep';  // Dream questionnaire is always post-sleep/awakening
+
+            // Get experience type
+            const experienceTypeRadio = document.querySelector('input[name="experience_type"]:checked');
+            if (!experienceTypeRadio) {
+                alert('Please select an experience type');
+                return;
+            }
+            const experienceType = experienceTypeRadio.value;
+
+            // Build responses object
+            const responses = {
+                experience_type: experienceType
+            };
+
+            // Add quantitative and cognitive data if CE
+            if (experienceType === 'CE') {
+                // Quantitative features
+                responses.ce_duration_value = document.getElementById('ce-duration-value').value || '';
+                responses.ce_duration_unit = document.getElementById('ce-duration-unit').value;
+                responses.ce_recent_value = document.getElementById('ce-recent-value').value || '';
+                responses.ce_recent_unit = document.getElementById('ce-recent-unit').value;
+                responses.ce_recall_value = document.getElementById('ce-recall-value').value || '';
+                responses.ce_recall_unit = document.getElementById('ce-recall-unit').value;
+                responses.ce_richness_value = document.getElementById('ce-richness-value').value || '';
+                responses.ce_richness_unit = document.getElementById('ce-richness-unit').value;
+                
+                // Cognitive dimensions
+                responses.perceiving = document.getElementById('perceiving').value;
+                responses.thinking = document.getElementById('thinking').value;
+                responses.self = document.getElementById('self').value;
+                responses.environment = document.getElementById('environment').value;
+                responses.awareness = document.getElementById('awareness').value;
+                responses.control = document.getElementById('control').value;
+                
+                // Optional description
+                responses.ce_description = document.getElementById('ce-description').value.trim();
+            }
+
+            // Prepare data
+            const data = {
+                subject: subjectId,
+                experiment: experiment,
+                session: session,
+                date: date || new Date().toISOString().split('T')[0],
+                type: 'dream',
+                responses: responses
+            };
+
+            // Try server first, fallback to download
+            let savedToServer = false;
+            
+            try {
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        savedToServer = true;
+                        document.getElementById('filename').textContent = 
+                            `sub-${subjectId}/${session}/beh/${result.filename}`;
+                        document.getElementById('success-message').style.display = 'block';
+                        document.getElementById('error-message').style.display = 'none';
+                        document.getElementById('dream-form').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                // Server not available, fall through to download
+                console.log('Server not available, using download fallback');
+            }
+
+            // Fallback: download CSV
+            if (!savedToServer) {
+                const timestamp = new Date().toISOString();
+                const header = 'subject,experiment,session,date,' + Object.keys(responses).join(',') + ',timestamp\n';
+                const csvData = `${subjectId},${experiment},${session},${date || timestamp.split('T')[0]},` + 
+                    Object.values(responses).map(v => typeof v === 'string' ? v.replace(/"/g, '""') : v).join(',') + 
+                    `,${timestamp}\n`;
+                
+                const filename = `sub-${subjectId}_${session}_dream.csv`;
+                const blob = new Blob([header + csvData], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('filename').textContent = filename + ' (downloaded)';
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
